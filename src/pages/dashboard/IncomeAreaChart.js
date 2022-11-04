@@ -44,6 +44,7 @@ const IncomeAreaChart = ({ slot }) => {
             colors: [theme.palette.primary.main, theme.palette.primary[700]],
             xaxis: {
                 categories:
+                    // TODO: Update these slots to change how many positions you want to see in the graphs
                     slot === 'month'
                         ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
                         : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -130,6 +131,7 @@ const IncomeAreaChart = ({ slot }) => {
         ]);
     }, [slot]);
 
+    // TODO: research ReactApexChart: https://apexcharts.com/docs/react-charts/
     return <ReactApexChart options={options} series={series} type="area" height={450} />;
 };
 
