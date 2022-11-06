@@ -111,7 +111,6 @@ const IncomeAreaChart = ({ slot }) => {
         ]);
     }, [slot]);
 
-    // TODO: research ReactApexChart: https://apexcharts.com/docs/react-charts/
     return <ReactApexChart options={options} series={series} type="area" height={450} />;
 };
 
