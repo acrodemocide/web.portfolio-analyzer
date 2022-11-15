@@ -2,7 +2,7 @@
     "name": "mantis-free-react-admin-template",
     "version": "1.1.0",
     "private": true,
-    "homepage": "https://mantisdashboard.io/free",
+    "homepage": "https://mantisdashboard.io/",
     "dependencies": {
         "@ant-design/colors": "^6.0.0",
         "@ant-design/icons": "^4.7.0",
@@ -40,7 +40,6 @@
         "redux": "^4.2.0",
         "simplebar": "^5.3.8",
         "simplebar-react": "^2.4.1",
-        "typescript": "4.8.3",
         "web-vitals": "^3.0.2",
         "yup": "^0.32.11"
     },
@@ -76,6 +75,10 @@
     "devDependencies": {
         "@babel/core": "^7.19.1",
         "@babel/eslint-parser": "^7.19.1",
+        "@types/jest": "^29.2.3",
+        "@types/node": "^18.11.9",
+        "@types/react": "^18.0.25",
+        "@types/react-dom": "^18.0.9",
         "eslint": "^8.23.1",
         "eslint-config-airbnb-typescript": "^17.0.0",
         "eslint-config-prettier": "^8.5.0",
@@ -87,6 +90,7 @@
         "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-react": "^7.31.8",
         "eslint-plugin-react-hooks": "4.6.0",
-        "prettier": "2.7.1"
+        "prettier": "2.7.1",
+        "typescript": "^4.8.3"
     }
 }
