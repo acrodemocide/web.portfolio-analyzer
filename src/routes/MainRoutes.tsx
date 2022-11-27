@@ -10,6 +10,8 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
 
+const PortfolioBuilder = Loadable(lazy(() => import('pages/portfolio-builder/portfolio-builder')));
+
 // render - utilities
 const Typography = Loadable(lazy(() => import('pages/components-overview/Typography')));
 const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
@@ -38,6 +40,10 @@ const MainRoutes = {
                     element: <DashboardDefault />
                 }
             ]
+        },
+        {
+            path: 'portfolio-builder',
+            element: <PortfolioBuilder />
         },
         {
             path: 'sample-page',
