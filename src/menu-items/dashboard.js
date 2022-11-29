@@ -14,6 +14,14 @@ const dashboard = {
     type: 'group',
     children: [
         {
+            id: 'portfolioBuilder',
+            title: 'Portfolio Builder',
+            type: 'item',
+            url: '/portfolio-builder',
+            icon: icons.DashboardOutlined,
+            breadcrumbs: false
+        },
+        {
             id: 'dashboard',
             title: 'Dashboard',
             type: 'item',
