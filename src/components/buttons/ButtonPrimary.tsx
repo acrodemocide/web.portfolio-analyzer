@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 
 export interface ButtonPrimaryProps {
     children: string;
-    onClick?: any;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const ButtonPrimary = ({ children, onClick }: ButtonPrimaryProps) => {
