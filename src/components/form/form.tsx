@@ -4,7 +4,7 @@ import { ButtonPrimary } from '../buttons/ButtonPrimary';
 
 export interface FormProps {
     handleSubmit: (arg: any) => void;
-    children?: JSX.Element;
+    children?: JSX.Element[];
 }
 
 const StyledFormComponent = styled('div', {
