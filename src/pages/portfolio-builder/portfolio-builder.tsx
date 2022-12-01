@@ -5,13 +5,14 @@ import { useState } from 'react';
 import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
 
-const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string) => {
+const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string, tickerSymbol: string) => {
     const header = 'Submitted!\n';
     const principalAmountStr = `principalAmount: ${principalAmount}\n`;
     const startYearStr = `startYear: ${startYear}\n`;
     const endYearStr = `endYear: ${endYear}\n`;
     const benchMarkStr = `benchMark: ${benchMark}\n`;
-    const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}`;
+    const tickerSymbolStr = `tickerSymbol: ${tickerSymbol}\n`;
+    const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${tickerSymbolStr}`;
 
     alert(message);
 };
@@ -30,6 +31,7 @@ const PortfolioBuilder = () => {
     const [formStartYear, setFormStartYear] = useState('');
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState('');
+    const [formTickerSymbol, setFormTickerSymbol] = useState('');
 
     return (
         <React.Fragment>
@@ -41,7 +43,7 @@ const PortfolioBuilder = () => {
             </Typography>
             <Form
                 handleSubmit={() => {
-                    handleSubmit(formPrincipalAmount, formStartYear, formEndYear, formBenchMark);
+                    handleSubmit(formPrincipalAmount, formStartYear, formEndYear, formBenchMark, formTickerSymbol);
                 }}
             >
                 <FormTextInput
@@ -73,6 +75,12 @@ const PortfolioBuilder = () => {
                     onChange={(e) => {
                         setFormBenchMark(e.target.value);
                     }}
+                />
+                <FormTextInput
+                    id={'tickerInput'}
+                    label={'Ticker Symbol'}
+                    value={formTickerSymbol}
+                    onChange={(e) => setFormTickerSymbol(e.target.value)}
                 />
             </Form>
         </React.Fragment>
