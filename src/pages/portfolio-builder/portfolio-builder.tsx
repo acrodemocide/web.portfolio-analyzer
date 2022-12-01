@@ -5,8 +5,12 @@ import { useState } from 'react';
 import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
 
-const handleSubmit = () => {
-    alert('Submitted!');
+const handleSubmit = (startYear: string) => {
+    const header = 'Submitted!\n';
+    const startYearStr = `startYear: ${startYear}\n`;
+    const message = `${header}${startYearStr}`;
+
+    alert(message);
 };
 
 const text =
@@ -20,6 +24,7 @@ const text =
 
 const PortfolioBuilder = () => {
     const [formPrincipalAmount, setFormPrincipalAmount] = useState('');
+    const [formStartYear, setFormStartYear] = useState('');
 
     return (
         <React.Fragment>
@@ -29,7 +34,11 @@ const PortfolioBuilder = () => {
             <Typography variant="body1" gutterBottom>
                 {text}
             </Typography>
-            <Form handleSubmit={handleSubmit}>
+            <Form
+                handleSubmit={() => {
+                    handleSubmit(formStartYear);
+                }}
+            >
                 <FormTextInput
                     id={'principalAmount'}
                     label={'Principal Amount'}
@@ -38,11 +47,11 @@ const PortfolioBuilder = () => {
                 />
                 <FormSelectInput
                     id={'id'}
-                    label={'label'}
-                    menuItems={['first', 'second', 'third']}
-                    value={'value'}
-                    onChange={() => {
-                        return;
+                    label={'Start Year'}
+                    menuItems={['2019', '2020', '2021']}
+                    value={formStartYear}
+                    onChange={(e) => {
+                        setFormStartYear(e.target.value);
                     }}
                 />
             </Form>

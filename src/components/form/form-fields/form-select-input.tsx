@@ -15,11 +15,10 @@ export const FormSelectInput = ({ id, label, value, menuItems, onChange }: FormS
             <InputLabel id={id}>{label}</InputLabel>
             <Select labelId={id} id={id} value={value} label={label} onChange={onChange}>
                 {menuItems.map((item: string) => {
+                    // Value attribute is what actually gets and sets the value for the selection
+                    // The child of MenuItem is what actually gets displayed in the list of items
                     return <MenuItem value={item}>{item}</MenuItem>;
                 })}
-                {/* <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem> */}
             </Select>
         </FormControl>
     );
