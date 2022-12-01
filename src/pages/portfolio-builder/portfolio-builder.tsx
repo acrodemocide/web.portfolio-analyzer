@@ -46,7 +46,6 @@ const PortfolioBuilder = () => {
                     onChange={(e) => setFormPrincipalAmount(e.target.value)}
                 />
                 <FormSelectInput
-                    id={'id'}
                     label={'Start Year'}
                     menuItems={['2019', '2020', '2021']}
                     value={formStartYear}
