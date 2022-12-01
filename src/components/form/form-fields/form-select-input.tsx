@@ -1,5 +1,6 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { ReactNode } from 'react';
+import { styled } from '@mui/system';
 
 export interface FormSelectInputProps {
     label: string;
@@ -8,9 +9,17 @@ export interface FormSelectInputProps {
     onChange: (event: SelectChangeEvent<string>, child: ReactNode) => void;
 }
 
+const StyledFormControl = styled(FormControl, {
+    shouldForwardProp: () => true,
+    name: 'asdf',
+    slot: 'Root'
+})(() => ({
+    marginBottom: '10px'
+}));
+
 export const FormSelectInput = ({ label, value, menuItems, onChange }: FormSelectInputProps) => {
     return (
-        <FormControl fullWidth>
+        <StyledFormControl fullWidth>
             <InputLabel>{label}</InputLabel>
             <Select value={value} label={label} onChange={onChange}>
                 {menuItems.map((item: string) => {
@@ -19,6 +28,6 @@ export const FormSelectInput = ({ label, value, menuItems, onChange }: FormSelec
                     return <MenuItem value={item}>{item}</MenuItem>;
                 })}
             </Select>
-        </FormControl>
+        </StyledFormControl>
     );
 };

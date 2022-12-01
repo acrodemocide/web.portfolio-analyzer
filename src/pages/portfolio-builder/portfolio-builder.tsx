@@ -5,10 +5,13 @@ import { useState } from 'react';
 import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
 
-const handleSubmit = (startYear: string) => {
+const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string) => {
     const header = 'Submitted!\n';
+    const principalAmountStr = `principalAmount: ${principalAmount}\n`;
     const startYearStr = `startYear: ${startYear}\n`;
-    const message = `${header}${startYearStr}`;
+    const endYearStr = `endYear: ${endYear}\n`;
+    const benchMarkStr = `benchMark: ${benchMark}\n`;
+    const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}`;
 
     alert(message);
 };
@@ -25,6 +28,8 @@ const text =
 const PortfolioBuilder = () => {
     const [formPrincipalAmount, setFormPrincipalAmount] = useState('');
     const [formStartYear, setFormStartYear] = useState('');
+    const [formEndYear, setFormEndYear] = useState('');
+    const [formBenchMark, setFormBenchMark] = useState('');
 
     return (
         <React.Fragment>
@@ -36,7 +41,7 @@ const PortfolioBuilder = () => {
             </Typography>
             <Form
                 handleSubmit={() => {
-                    handleSubmit(formStartYear);
+                    handleSubmit(formPrincipalAmount, formStartYear, formEndYear, formBenchMark);
                 }}
             >
                 <FormTextInput
@@ -51,6 +56,22 @@ const PortfolioBuilder = () => {
                     value={formStartYear}
                     onChange={(e) => {
                         setFormStartYear(e.target.value);
+                    }}
+                />
+                <FormSelectInput
+                    label={'End Year'}
+                    menuItems={['2020', '2021', '2022']}
+                    value={formEndYear}
+                    onChange={(e) => {
+                        setFormEndYear(e.target.value);
+                    }}
+                />
+                <FormSelectInput
+                    label={'Bench Mark'}
+                    menuItems={['S&P 500', 'DJIA', 'NASDAQ']}
+                    value={formBenchMark}
+                    onChange={(e) => {
+                        setFormBenchMark(e.target.value);
                     }}
                 />
             </Form>
