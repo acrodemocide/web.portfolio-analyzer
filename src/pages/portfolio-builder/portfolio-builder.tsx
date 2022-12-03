@@ -76,6 +76,11 @@ const PortfolioBuilder = () => {
                         setFormBenchMark(e.target.value);
                     }}
                 />
+
+                <Typography variant="h3" gutterBottom>
+                    Select your stocks
+                </Typography>
+
                 <FormTextInput
                     id={'tickerInput'}
                     label={'Ticker Symbol'}
