@@ -5,13 +5,20 @@ import { useState } from 'react';
 import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
 
-const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string) => {
+const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string, stockPicks: StockPick[]) => {
     const header = 'Submitted!\n';
     const principalAmountStr = `principalAmount: ${principalAmount}\n`;
     const startYearStr = `startYear: ${startYear}\n`;
     const endYearStr = `endYear: ${endYear}\n`;
     const benchMarkStr = `benchMark: ${benchMark}\n`;
-    const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}`;
+
+    let stockPicksStr = 'STOCK PICKS:\n';
+    stockPicks.forEach((x, index) => {
+        let str = `${index} -- Ticker: ${x.ticker === '' ? '[empty]' : x.ticker}, Percent: ${x.percent === '' ? '[empty]' : x.percent}\n`;
+        stockPicksStr += str;
+    });
+
+    const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${stockPicksStr}`;
 
     alert(message);
 };
@@ -67,7 +74,7 @@ const PortfolioBuilder = () => {
             </Typography>
             <Form
                 handleSubmit={() => {
-                    handleSubmit(formPrincipalAmount, formStartYear, formEndYear, formBenchMark);
+                    handleSubmit(formPrincipalAmount, formStartYear, formEndYear, formBenchMark, stockPicks);
                 }}
             >
                 <FormTextInput
