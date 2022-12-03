@@ -5,22 +5,13 @@ import { useState } from 'react';
 import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
 
-const handleSubmit = (
-    principalAmount: string,
-    startYear: string,
-    endYear: string,
-    benchMark: string,
-    tickerSymbol: string,
-    formTickerPercent: string
-) => {
+const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string) => {
     const header = 'Submitted!\n';
     const principalAmountStr = `principalAmount: ${principalAmount}\n`;
     const startYearStr = `startYear: ${startYear}\n`;
     const endYearStr = `endYear: ${endYear}\n`;
     const benchMarkStr = `benchMark: ${benchMark}\n`;
-    const tickerSymbolStr = `tickerSymbol: ${tickerSymbol}\n`;
-    const formTickerPercentStr = `formTickerPercent: ${formTickerPercent}\n`;
-    const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${tickerSymbolStr}${formTickerPercentStr}`;
+    const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}`;
 
     alert(message);
 };
@@ -52,9 +43,19 @@ const PortfolioBuilder = () => {
     const [formStartYear, setFormStartYear] = useState('');
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState('');
-    const [formTickerSymbol, setFormTickerSymbol] = useState('');
-    const [formTickerPercent, setFormTickerPercent] = useState('');
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
+
+    const handleTickerChange = (ticker: string, index: number) => {
+        let stockPick: StockPick = stockPicks[index];
+        stockPicks[index] = { ...stockPick, ticker };
+        setStockPicks([...stockPicks]);
+    };
+
+    const handlePercentChange = (percent: string, index: number) => {
+        let stockPick: StockPick = stockPicks[index];
+        stockPicks[index] = { ...stockPick, percent };
+        setStockPicks([...stockPicks]);
+    };
 
     return (
         <React.Fragment>
@@ -66,7 +67,7 @@ const PortfolioBuilder = () => {
             </Typography>
             <Form
                 handleSubmit={() => {
-                    handleSubmit(formPrincipalAmount, formStartYear, formEndYear, formBenchMark, formTickerSymbol, formTickerPercent);
+                    handleSubmit(formPrincipalAmount, formStartYear, formEndYear, formBenchMark);
                 }}
             >
                 <FormTextInput
@@ -102,24 +103,6 @@ const PortfolioBuilder = () => {
                 <Typography variant="h3" gutterBottom>
                     Select your stocks
                 </Typography>
-                <Grid container>
-                    <Grid item xs={8}>
-                        <FormTextInput
-                            id={'tickerInput'}
-                            label={'Ticker Symbol'}
-                            value={formTickerSymbol}
-                            onChange={(e) => setFormTickerSymbol(e.target.value)}
-                        />
-                    </Grid>
-                    <Grid item xs={4}>
-                        <FormTextInput
-                            id={'tickerPercent'}
-                            label={'Percent'}
-                            value={formTickerPercent}
-                            onChange={(e) => setFormTickerPercent(e.target.value)}
-                        />
-                    </Grid>
-                </Grid>
                 <div>
                     {stockPicks.map((stockPick: StockPick, index: number) => {
                         return (
@@ -130,7 +113,7 @@ const PortfolioBuilder = () => {
                                         label={'Ticker Symbol'}
                                         value={stockPick.ticker}
                                         onChange={(e) => {
-                                            return e;
+                                            handleTickerChange(e.target.value, index);
                                         }}
                                     />
                                 </Grid>
@@ -140,7 +123,7 @@ const PortfolioBuilder = () => {
                                         label={'Percent'}
                                         value={stockPick.percent}
                                         onChange={(e) => {
-                                            return e;
+                                            handlePercentChange(e.target.value, index);
                                         }}
                                     />
                                 </Grid>
