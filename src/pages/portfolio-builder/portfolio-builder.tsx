@@ -1,18 +1,26 @@
-import { Typography } from '@mui/material';
+import { Typography, Grid } from '@mui/material';
 import { FormSelectInput } from 'components/form/form-fields/form-select-input';
 import React from 'react';
 import { useState } from 'react';
 import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
 
-const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string, tickerSymbol: string) => {
+const handleSubmit = (
+    principalAmount: string,
+    startYear: string,
+    endYear: string,
+    benchMark: string,
+    tickerSymbol: string,
+    formTickerPercent: string
+) => {
     const header = 'Submitted!\n';
     const principalAmountStr = `principalAmount: ${principalAmount}\n`;
     const startYearStr = `startYear: ${startYear}\n`;
     const endYearStr = `endYear: ${endYear}\n`;
     const benchMarkStr = `benchMark: ${benchMark}\n`;
     const tickerSymbolStr = `tickerSymbol: ${tickerSymbol}\n`;
-    const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${tickerSymbolStr}`;
+    const formTickerPercentStr = `formTickerPercent: ${formTickerPercent}\n`;
+    const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${tickerSymbolStr}${formTickerPercentStr}`;
 
     alert(message);
 };
@@ -32,6 +40,7 @@ const PortfolioBuilder = () => {
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState('');
     const [formTickerSymbol, setFormTickerSymbol] = useState('');
+    const [formTickerPercent, setFormTickerPercent] = useState('');
 
     return (
         <React.Fragment>
@@ -43,7 +52,7 @@ const PortfolioBuilder = () => {
             </Typography>
             <Form
                 handleSubmit={() => {
-                    handleSubmit(formPrincipalAmount, formStartYear, formEndYear, formBenchMark, formTickerSymbol);
+                    handleSubmit(formPrincipalAmount, formStartYear, formEndYear, formBenchMark, formTickerSymbol, formTickerPercent);
                 }}
             >
                 <FormTextInput
@@ -76,17 +85,27 @@ const PortfolioBuilder = () => {
                         setFormBenchMark(e.target.value);
                     }}
                 />
-
                 <Typography variant="h3" gutterBottom>
                     Select your stocks
                 </Typography>
-
-                <FormTextInput
-                    id={'tickerInput'}
-                    label={'Ticker Symbol'}
-                    value={formTickerSymbol}
-                    onChange={(e) => setFormTickerSymbol(e.target.value)}
-                />
+                <Grid container>
+                    <Grid item xs={8}>
+                        <FormTextInput
+                            id={'tickerInput'}
+                            label={'Ticker Symbol'}
+                            value={formTickerSymbol}
+                            onChange={(e) => setFormTickerSymbol(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormTextInput
+                            id={'tickerPercent'}
+                            label={'Percent'}
+                            value={formTickerPercent}
+                            onChange={(e) => setFormTickerPercent(e.target.value)}
+                        />
+                    </Grid>
+                </Grid>
             </Form>
         </React.Fragment>
     );
