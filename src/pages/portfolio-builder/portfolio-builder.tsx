@@ -34,13 +34,27 @@ const text =
     'You can choose from a number of benchmarks to compare your portfolio ' +
     'against for that same period.';
 
+interface StockPick {
+    ticker: string;
+    percent: string;
+}
+
 const PortfolioBuilder = () => {
+    const initialStockPicks: StockPick[] = [];
+    for (let i = 0; i < 10; i++) {
+        initialStockPicks.push({
+            ticker: '',
+            percent: ''
+        });
+    }
+
     const [formPrincipalAmount, setFormPrincipalAmount] = useState('');
     const [formStartYear, setFormStartYear] = useState('');
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState('');
     const [formTickerSymbol, setFormTickerSymbol] = useState('');
     const [formTickerPercent, setFormTickerPercent] = useState('');
+    const [stockPicks, setStockPicks] = useState(initialStockPicks);
 
     return (
         <React.Fragment>
@@ -106,6 +120,34 @@ const PortfolioBuilder = () => {
                         />
                     </Grid>
                 </Grid>
+                <div>
+                    {stockPicks.map((stockPick: StockPick, index: number) => {
+                        return (
+                            <Grid key={index} container>
+                                <Grid item xs={8}>
+                                    <FormTextInput
+                                        id={`tickerInput_${index}`}
+                                        label={'Ticker Symbol'}
+                                        value={stockPick.ticker}
+                                        onChange={(e) => {
+                                            return e;
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <FormTextInput
+                                        id={`tickerPercent_${index}`}
+                                        label={'Percent'}
+                                        value={stockPick.percent}
+                                        onChange={(e) => {
+                                            return e;
+                                        }}
+                                    />
+                                </Grid>
+                            </Grid>
+                        );
+                    })}
+                </div>
             </Form>
         </React.Fragment>
     );
