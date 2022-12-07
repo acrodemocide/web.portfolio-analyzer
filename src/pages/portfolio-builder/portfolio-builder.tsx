@@ -101,7 +101,7 @@ const PortfolioBuilder = () => {
                 />
                 <FormSelectInput
                     label={'Bench Mark'}
-                    menuItems={['S&P 500', 'DJIA', 'NASDAQ']}
+                    menuItems={['S&P 500', 'DJIA', 'NASDAQ', 'Russell 2000']}
                     value={formBenchMark}
                     onChange={(e) => {
                         setFormBenchMark(e.target.value);
