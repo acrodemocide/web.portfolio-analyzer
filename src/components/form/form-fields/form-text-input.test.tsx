@@ -14,6 +14,9 @@ test('renders learn react link', () => {
             }}
         />
     );
-    const textInputElement = screen.getByText(label);
-    expect(textInputElement).toBeInTheDocument();
+    const textInputElement = screen.getAllByText(label);
+    expect(textInputElement).toBeDefined();
+    expect(textInputElement.length).toBe(2);
+    expect(textInputElement[0]).toBeInTheDocument();
+    expect(textInputElement[1]).toBeInTheDocument();
 });

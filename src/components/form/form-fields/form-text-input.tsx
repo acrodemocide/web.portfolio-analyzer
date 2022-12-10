@@ -17,6 +17,6 @@ export const FormTextInput = ({ id, label, required, value, onChange }: FormText
         // sx={{ width: '100%' }}
         // standard
         // variant="outlined"
-        <TextField sx={{ m: 1 }} id={id} label={label} required={required} value={value} onChange={onChange} />
+        <TextField sx={{ marginBottom: 1 }} id={id} label={label} required={required} value={value} onChange={onChange} />
     );
 };
