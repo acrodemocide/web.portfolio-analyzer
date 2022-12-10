@@ -11,7 +11,7 @@ export interface FormSelectInputProps {
 
 const StyledFormControl = styled(FormControl, {
     shouldForwardProp: () => true,
-    name: 'asdf',
+    name: 'formControl',
     slot: 'Root'
 })(() => ({
     marginBottom: '10px'
