@@ -9,5 +9,4 @@ export const BacktestPortfolio = () => {
     return axios.post('http://localhost:8000/stocks/backtest/', body).then((response) => {
         return response.data;
     });
-    // return [];
 };
