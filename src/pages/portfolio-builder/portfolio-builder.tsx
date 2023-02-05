@@ -4,7 +4,10 @@ import React from 'react';
 import { useState } from 'react';
 import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
+import { BacktestPortfolio } from 'services/backtest-service';
+// import { useUnmountEffect } from 'framer-motion';
 
+// TODO: dhoward -- move this into component function to directly access state vars.
 const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string, stockPicks: StockPick[]) => {
     const header = 'Submitted!\n';
     const principalAmountStr = `principalAmount: ${principalAmount}\n`;
@@ -20,7 +23,12 @@ const handleSubmit = (principalAmount: string, startYear: string, endYear: strin
 
     const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${stockPicksStr}`;
 
-    alert(message);
+    // alert(message);
+    console.log('@@message: ', message);
+    BacktestPortfolio().then((response) => {
+        console.log('@@Backtest call completed');
+        alert(response);
+    });
 };
 
 const text =
@@ -51,6 +59,11 @@ const PortfolioBuilder = () => {
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState('');
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
+    const [portfolioValues, setPortfolioValues] = useState([]);
+
+    // useUnmountEffect(() => {
+
+    // }, [portfolioValues]);
 
     const handleTickerChange = (ticker: string, index: number) => {
         let stockPick: StockPick = stockPicks[index];
