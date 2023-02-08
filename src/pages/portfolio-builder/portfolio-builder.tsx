@@ -1,11 +1,11 @@
+import React from 'react';
 import { Typography, Grid } from '@mui/material';
 import { FormSelectInput } from 'components/form/form-fields/form-select-input';
-import React from 'react';
 import { useState } from 'react';
 import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
 import { BacktestPortfolio } from 'services/backtest-service';
-// import { useUnmountEffect } from 'framer-motion';
+import { PortfolioGrowthChart } from '../../components/portfolio-growth-chart';
 
 // TODO: dhoward -- move this into component function to directly access state vars.
 const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string, stockPicks: StockPick[]) => {
@@ -23,7 +23,6 @@ const handleSubmit = (principalAmount: string, startYear: string, endYear: strin
 
     const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${stockPicksStr}`;
 
-    // alert(message);
     console.log('@@message: ', message);
     BacktestPortfolio().then((response) => {
         console.log('@@Backtest call completed');
@@ -152,6 +151,8 @@ const PortfolioBuilder = () => {
                     })}
                 </div>
             </Form>
+
+            <PortfolioGrowthChart />
         </React.Fragment>
     );
 };
