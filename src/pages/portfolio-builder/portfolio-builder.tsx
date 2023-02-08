@@ -59,7 +59,7 @@ const PortfolioBuilder = () => {
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState('');
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
-    const [portfolioValues, setPortfolioValues] = useState([]);
+    // const [portfolioValues, setPortfolioValues] = useState([]);
 
     // useUnmountEffect(() => {
 
