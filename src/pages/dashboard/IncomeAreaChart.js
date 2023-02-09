@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 
 // third-party
+// eslint-disable-next-line no-unused-vars
 import ReactApexChart from 'react-apexcharts';
 
 // chart options

@@ -6,6 +6,7 @@ import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
 import { BacktestPortfolio } from 'services/backtest-service';
 import { PortfolioGrowthChart } from '../../components/portfolio-growth-chart/portfolio-growth-chart';
+import IncomeAreaChart from 'pages/dashboard/IncomeAreaChart';
 
 // TODO: dhoward -- move this into component function to directly access state vars.
 const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string, stockPicks: StockPick[]) => {
@@ -149,6 +150,7 @@ const PortfolioBuilder = () => {
             </Form>
 
             <PortfolioGrowthChart />
+            {/* <IncomeAreaChart /> */}
         </React.Fragment>
     );
 };
