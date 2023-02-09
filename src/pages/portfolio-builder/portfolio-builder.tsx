@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
 import { BacktestPortfolio } from 'services/backtest-service';
-import { PortfolioGrowthChart } from '../../components/portfolio-growth-chart';
+import { PortfolioGrowthChart } from '../../components/portfolio-growth-chart/portfolio-growth-chart';
 
 // TODO: dhoward -- move this into component function to directly access state vars.
 const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string, stockPicks: StockPick[]) => {
@@ -59,10 +59,6 @@ const PortfolioBuilder = () => {
     const [formBenchMark, setFormBenchMark] = useState('');
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     // const [portfolioValues, setPortfolioValues] = useState([]);
-
-    // useUnmountEffect(() => {
-
-    // }, [portfolioValues]);
 
     const handleTickerChange = (ticker: string, index: number) => {
         let stockPick: StockPick = stockPicks[index];
