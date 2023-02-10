@@ -1,15 +1,13 @@
-// import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-
-// material-ui
 import { useTheme } from '@mui/material/styles';
-
-// third-party
 // eslint-disable-next-line no-unused-vars
 import ReactApexChart from 'react-apexcharts';
+import { StockType } from '../../services/backtest-service';
 
 export type PortfolioGrowthChartProps = {
     slot?: string;
+    // TODO: we need to make this into a portfolio type
+    stock?: StockType;
 };
 
 // chart options
