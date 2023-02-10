@@ -1,11 +1,19 @@
 import axios from 'axios';
+import { Dayjs } from 'dayjs';
 
-// TODO: we need to make this into a portfolio type
-export type StockType = {
+export type PriceSnapshot = {
+    price: number;
+    dateTime: Dayjs;
+};
+
+export type Stock = {
     businessName: string;
     ticker: string;
-    // TODO: dhoward -- determine how we want to indicate intervals (i.e.: yearly, monthly, etc)
-    priceHistory: number[];
+    priceHistory: PriceSnapshot[];
+};
+
+export type Portfolio = {
+    stocks: Stock[];
 };
 
 export const BacktestPortfolio = () => {

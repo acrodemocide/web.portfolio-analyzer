@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 // eslint-disable-next-line no-unused-vars
 import ReactApexChart from 'react-apexcharts';
-import { StockType } from '../../services/backtest-service';
+import { Portfolio } from '../../services/backtest-service';
 
 export type PortfolioGrowthChartProps = {
     slot?: string;
-    // TODO: we need to make this into a portfolio type
-    stock?: StockType;
+    portfolio?: Portfolio;
 };
 
 // chart options
@@ -45,7 +44,7 @@ export const PortfolioGrowthChart = ({ slot }: PortfolioGrowthChartProps) => {
             ...prevState,
             colors: [theme.palette.primary.main, theme.palette.primary.dark],
             xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                categories: ['2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022'],
                 labels: {
                     style: {
                         colors: [
