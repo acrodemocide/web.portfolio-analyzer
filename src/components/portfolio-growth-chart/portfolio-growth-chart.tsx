@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 
 // material-ui
@@ -40,16 +40,12 @@ export const PortfolioGrowthChart = ({ slot }: PortfolioGrowthChartProps) => {
 
     const { primary, secondary } = theme.palette.text;
     const line = theme.palette.divider;
-
     const [options, setOptions] = useState(areaChartOptions);
-
-    const primaryKeys: string[] = Object.keys(theme.palette.primary);
-    const option700: string = primaryKeys[700];
 
     useEffect(() => {
         setOptions((prevState) => ({
             ...prevState,
-            colors: [theme.palette.primary.main, option700],
+            colors: [theme.palette.primary.main, theme.palette.primary.dark],
             xaxis: {
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 labels: {
@@ -96,11 +92,11 @@ export const PortfolioGrowthChart = ({ slot }: PortfolioGrowthChartProps) => {
     const [series, setSeries] = useState([
         {
             name: 'Personal Portfolio',
-            data: [25, 50, 75, 100, 110, 130, 150]
+            data: [25, 50, 75, 108, 120, 95, 135, 140, 155, 122, 145, 160]
         },
         {
             name: 'S&P 500',
-            data: [25, 35, 55, 40, 65, 88, 98]
+            data: [25, 43, 55, 66, 60, 77, 68, 75, 88, 95, 100, 110]
         }
     ]);
 
