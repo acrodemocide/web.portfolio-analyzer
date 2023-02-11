@@ -1,22 +1,10 @@
 import axios from 'axios';
-import { Dayjs } from 'dayjs';
-
-export type PriceSnapshot = {
-    price: number;
-    dateTime: Dayjs;
-};
-
-export type Stock = {
-    businessName: string;
-    ticker: string;
-    priceHistory: PriceSnapshot[];
-};
 
 export type Portfolio = {
-    stocks: Stock[];
+    price_history: number[];
 };
 
-export const BacktestPortfolio = () => {
+export const BacktestPortfolio = (): Promise<Portfolio> => {
     const body = {
         businessName: 'Tesla',
         ticker: 'T',
