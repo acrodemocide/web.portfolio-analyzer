@@ -41,15 +41,11 @@ export const PortfolioGrowthChart = ({ portfolio }: PortfolioGrowthChartProps) =
     const portfolioCategories: number[] = [];
     const portfolioValues: number[] = [];
 
-    // portfolio.forEach((price: number, index: number) => {
-    //     portfolioCategories.push(index);
-    //     portfolioValues.push(price);
-    // });
-    const tickAmount = 11;
-    for (let i = 0; i < 11; i++) {
-        portfolioCategories.push(i);
-        portfolioValues.push(portfolio.price_history[i]);
-    }
+    const tickAmount = Math.floor(portfolio.price_history.length / 52);
+    portfolio.price_history.forEach((price: number, index: number) => {
+        portfolioCategories.push(index);
+        portfolioValues.push(price);
+    });
 
     useEffect(() => {
         setOptions((prevState) => ({
