@@ -83,7 +83,6 @@ const PortfolioBuilder = () => {
             </Typography>
             <Form
                 handleSubmit={() => {
-                    // formPrincipalAmount, formStartYear, formEndYear, formBenchMark, stockPicks
                     handleSubmit();
                 }}
             >
