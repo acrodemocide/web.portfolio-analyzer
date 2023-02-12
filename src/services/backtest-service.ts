@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-export const BacktestPortfolio = () => {
+export type Portfolio = {
+    price_history: number[];
+};
+
+export const BacktestPortfolio = (): Promise<Portfolio> => {
     const body = {
         businessName: 'Tesla',
         ticker: 'T',

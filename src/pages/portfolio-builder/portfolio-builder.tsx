@@ -1,35 +1,11 @@
+import React, { useEffect } from 'react';
 import { Typography, Grid } from '@mui/material';
 import { FormSelectInput } from 'components/form/form-fields/form-select-input';
-import React from 'react';
 import { useState } from 'react';
 import { Form } from '../../components/form/form';
 import { FormTextInput } from '../../components/form/form-fields/form-text-input';
-import { BacktestPortfolio } from 'services/backtest-service';
-// import { useUnmountEffect } from 'framer-motion';
-
-// TODO: dhoward -- move this into component function to directly access state vars.
-const handleSubmit = (principalAmount: string, startYear: string, endYear: string, benchMark: string, stockPicks: StockPick[]) => {
-    const header = 'Submitted!\n';
-    const principalAmountStr = `principalAmount: ${principalAmount}\n`;
-    const startYearStr = `startYear: ${startYear}\n`;
-    const endYearStr = `endYear: ${endYear}\n`;
-    const benchMarkStr = `benchMark: ${benchMark}\n`;
-
-    let stockPicksStr = 'STOCK PICKS:\n';
-    stockPicks.forEach((x, index) => {
-        let str = `${index} -- Ticker: ${x.ticker === '' ? '[empty]' : x.ticker}, Percent: ${x.percent === '' ? '[empty]' : x.percent}\n`;
-        stockPicksStr += str;
-    });
-
-    const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${stockPicksStr}`;
-
-    // alert(message);
-    console.log('@@message: ', message);
-    BacktestPortfolio().then((response) => {
-        console.log('@@Backtest call completed');
-        alert(response);
-    });
-};
+import { BacktestPortfolio, Portfolio } from 'services/backtest-service';
+import { PortfolioGrowthChart } from '../../components/portfolio-growth-chart/portfolio-growth-chart';
 
 const text =
     'Welcome to the Portfolio Builder. Here you can select a list of ' +
@@ -59,11 +35,31 @@ const PortfolioBuilder = () => {
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState('');
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
-    // const [portfolioValues, setPortfolioValues] = useState([]);
+    const [portfolio, setPortfolio] = useState({ price_history: [] as number[] } as Portfolio);
 
-    // useUnmountEffect(() => {
+    const handleSubmit = () => {
+        const header = 'Submitted!\n';
+        const principalAmountStr = `principalAmount: ${formPrincipalAmount}\n`;
+        const startYearStr = `startYear: ${formStartYear}\n`;
+        const endYearStr = `endYear: ${formEndYear}\n`;
+        const benchMarkStr = `benchMark: ${formBenchMark}\n`;
 
-    // }, [portfolioValues]);
+        let stockPicksStr = 'STOCK PICKS:\n';
+        stockPicks.forEach((x, index) => {
+            let str = `${index} -- Ticker: ${x.ticker === '' ? '[empty]' : x.ticker}, Percent: ${
+                x.percent === '' ? '[empty]' : x.percent
+            }\n`;
+            stockPicksStr += str;
+        });
+
+        const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${stockPicksStr}`;
+
+        console.log('@@message: ', message);
+        BacktestPortfolio().then((response) => {
+            console.log('@@Backtest call completed');
+            setPortfolio(response);
+        });
+    };
 
     const handleTickerChange = (ticker: string, index: number) => {
         let stockPick: StockPick = stockPicks[index];
@@ -87,7 +83,7 @@ const PortfolioBuilder = () => {
             </Typography>
             <Form
                 handleSubmit={() => {
-                    handleSubmit(formPrincipalAmount, formStartYear, formEndYear, formBenchMark, stockPicks);
+                    handleSubmit();
                 }}
             >
                 <FormTextInput
@@ -152,6 +148,8 @@ const PortfolioBuilder = () => {
                     })}
                 </div>
             </Form>
+
+            <PortfolioGrowthChart portfolio={portfolio} />
         </React.Fragment>
     );
 };
