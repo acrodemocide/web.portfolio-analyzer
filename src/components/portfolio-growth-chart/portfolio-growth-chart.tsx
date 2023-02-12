@@ -45,14 +45,10 @@ export const PortfolioGrowthChart = ({ portfolio }: PortfolioGrowthChartProps) =
     //     portfolioCategories.push(index);
     //     portfolioValues.push(price);
     // });
-    console.log('@@portfolio: ', portfolio);
-    console.log('@@portfolio.priceHistory: ', portfolio.price_history);
     for (let i = 0; i < 11; i++) {
         portfolioCategories.push(i);
         portfolioValues.push(portfolio.price_history[i]);
     }
-    console.log('@@portfolioCategories: ', portfolioCategories);
-    console.log('@@portfolioValues: ', portfolioValues);
 
     useEffect(() => {
         setOptions((prevState) => ({
