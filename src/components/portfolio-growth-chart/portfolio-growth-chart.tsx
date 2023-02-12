@@ -45,6 +45,7 @@ export const PortfolioGrowthChart = ({ portfolio }: PortfolioGrowthChartProps) =
     //     portfolioCategories.push(index);
     //     portfolioValues.push(price);
     // });
+    const tickAmount = 11;
     for (let i = 0; i < 11; i++) {
         portfolioCategories.push(i);
         portfolioValues.push(portfolio.price_history[i]);
@@ -55,7 +56,6 @@ export const PortfolioGrowthChart = ({ portfolio }: PortfolioGrowthChartProps) =
             ...prevState,
             colors: [theme.palette.primary.main, theme.palette.primary.dark],
             xaxis: {
-                // categories: ['2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022'],
                 categories: portfolioCategories,
                 labels: {
                     style: {
@@ -79,8 +79,7 @@ export const PortfolioGrowthChart = ({ portfolio }: PortfolioGrowthChartProps) =
                     show: true,
                     color: line
                 },
-                // TODO: dhoward - set this tick amount based on data we get from props
-                tickAmount: 11
+                tickAmount
             },
             yaxis: {
                 labels: {
@@ -97,13 +96,9 @@ export const PortfolioGrowthChart = ({ portfolio }: PortfolioGrowthChartProps) =
                 theme: 'light'
             }
         }));
-    }, [primary, secondary, line, theme]);
+    }, [primary, secondary, line, theme, portfolio]);
 
     const [series, setSeries] = useState([
-        // {
-        //     name: 'Personal Portfolio',
-        //     data: [25, 50, 75, 108, 120, 95, 135, 140, 155, 122, 145, 160]
-        // },
         // {
         //     name: 'S&P 500',
         //     data: [25, 43, 55, 66, 60, 77, 68, 75, 88, 95, 100, 110]
@@ -118,7 +113,6 @@ export const PortfolioGrowthChart = ({ portfolio }: PortfolioGrowthChartProps) =
         setSeries([
             {
                 name: 'Personal Portfolio',
-                // data: [25, 50, 75, 108, 120, 95, 135, 140, 155, 122, 145, 160]
                 data: portfolioValues
             }
             // {
@@ -126,7 +120,7 @@ export const PortfolioGrowthChart = ({ portfolio }: PortfolioGrowthChartProps) =
             //     data: [25, 43, 55, 66, 60, 77, 68, 75, 88, 95, 100, 110]
             // }
         ]);
-    }, []);
+    }, [portfolio]);
 
     return <ReactApexChart options={options} series={series} type="area" height={450} />;
 };
