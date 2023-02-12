@@ -37,8 +37,6 @@ const PortfolioBuilder = () => {
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     const [portfolio, setPortfolio] = useState({ price_history: [] as number[] } as Portfolio);
 
-    // TODO: dhoward -- move this into component function to directly access state vars.
-    // principalAmount: string, startYear: string, endYear: string, benchMark: string, stockPicks: StockPick[]
     const handleSubmit = () => {
         const header = 'Submitted!\n';
         const principalAmountStr = `principalAmount: ${formPrincipalAmount}\n`;
