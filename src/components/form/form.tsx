@@ -1,6 +1,6 @@
-import { styled } from '@mui/system';
 import { Grid } from '@mui/material';
-import { ButtonPrimary } from '../buttons/ButtonPrimary';
+import { styled } from '@mui/system';
+import { ButtonPrimary } from '../buttons/button-primary';
 
 export interface FormProps {
     handleSubmit: (arg: any) => void;
@@ -38,3 +38,4 @@ export const Form: (props: FormProps) => JSX.Element = ({ handleSubmit, children
         </StyledFormComponent>
     );
 };
+
