@@ -16,7 +16,6 @@ export const BacktestPortfolio = (): Promise<Portfolio> => {
         "strategy": "new_algorithm"
     };
     return axios.post('http://localhost:8000/stocks/backtest/', body).then((response) => {
-        console.log('@@response.data: ', response.data);
         const snapshots = response.data.snapshots;
         const price_history: number[] = [];
         for (let key in snapshots) {
