@@ -68,7 +68,6 @@ export const PortfolioBuilder = () => {
 
         console.log('@@message: ', message);
         BacktestPortfolio().then((response) => {
-            console.log('@@Backtest call completed');
             setPortfolio(response);
         });
     };

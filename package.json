@@ -44,5 +44,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "asdf",
+  "main": "index.js",
+  "repository": "git@github.com:acrodemocide/web.portfolio-analyzer.git",
+  "author": "Daniel Howard <acrodemocide@hotmail.com>",
+  "license": "MIT"
 }
