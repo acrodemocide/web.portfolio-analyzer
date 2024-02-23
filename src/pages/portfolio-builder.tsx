@@ -5,7 +5,7 @@ import { Form } from '../components/form/form';
 import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
 import { BacktestPortfolio, Portfolio } from '../services/backtest-service';
-import { PortfolioGrowthChart } from '../components/portfolio-growth-chart/portfolio-growth-chart';
+// import { PortfolioGrowthChart } from '../components/portfolio-growth-chart/portfolio-growth-chart';
 import { LineChart } from '@mui/x-charts/LineChart';
 
 interface StockPick {
@@ -73,6 +73,22 @@ export const PortfolioBuilder = () => {
         });
     };
 
+    // Date.prototype.addDays = function(days: number) {
+    //     var date = new Date(this.valueOf());
+    //     date.setDate(date.getDate() + days);
+    //     return date;
+    // }
+
+    const dates: Date[] = [];
+    const priceHistoryIndex: number[] = [];
+    for (let i = 0; i < portfolio.price_history.length; i++) {
+        let date = new Date();
+        date.setDate(date.getDate() + i);
+        dates.push(date);
+        priceHistoryIndex.push(i);
+    }
+    console.log('@@dates: ', dates);
+
     return (
         <React.Fragment>
             <Typography variant="h2" gutterBottom>
@@ -81,6 +97,20 @@ export const PortfolioBuilder = () => {
             <Typography variant="body2" gutterBottom>
                 {text}
             </Typography>
+            {/* <PortfolioGrowthChart portfolio={portfolio} /> */}
+            {/* priceHistoryIndex */}
+            { dates.length > 0 && (
+                <LineChart
+                xAxis={[{ data: dates }]}
+                series={[
+                    {
+                    data: portfolio.price_history,
+                    },
+                ]}
+                width={1000}
+                height={600}
+                />
+            )}
             <Form handleSubmit={handleSubmit}>
                 <FormTextInput
                     id={'principalAmount'}
@@ -144,17 +174,6 @@ export const PortfolioBuilder = () => {
                     })}
                 </div>
             </Form>
-            {/* <PortfolioGrowthChart portfolio={portfolio} /> */}
-            <LineChart
-                xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-                series={[
-                    {
-                    data: [2, 5.5, 2, 8.5, 1.5, 5],
-                    },
-                ]}
-                width={500}
-                height={300}
-                />
         </React.Fragment>
     )
 };
