@@ -4,9 +4,9 @@ import Grid from '@mui/material/Grid';
 import { Form } from '../components/form/form';
 import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
-import { BacktestPortfolio, Portfolio } from '../services/backtest-service';
-// import { PortfolioGrowthChart } from '../components/portfolio-growth-chart/portfolio-growth-chart';
+import { BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
 import { LineChart } from '@mui/x-charts/LineChart';
+import { selectChartData, generateXAxisLabels, getPriceHistory } from './portfolio-builder.services';
 
 interface StockPick {
     ticker: string;
@@ -36,7 +36,8 @@ export const PortfolioBuilder = () => {
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState('');
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
-    const [portfolio, setPortfolio] = useState({ price_history: [] as number[] } as Portfolio);
+    // const [portfolio, setPortfolio] = useState({ price_history: [] as number[] } as Portfolio);
+    const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
 
     const handleTickerChange = (ticker: string, index: number) => {
         let stockPick: StockPick = stockPicks[index];
@@ -73,21 +74,27 @@ export const PortfolioBuilder = () => {
         });
     };
 
-    // Date.prototype.addDays = function(days: number) {
-    //     var date = new Date(this.valueOf());
-    //     date.setDate(date.getDate() + days);
-    //     return date;
+    // const dates: Date[] = [];
+    // const priceHistoryIndex: number[] = [];
+    // for (let i = 0; i < portfolio.price_history.length; i++) {
+    //     let date = new Date();
+    //     date.setDate(date.getDate() + i);
+    //     dates.push(date);
+    //     priceHistoryIndex.push(i);
     // }
+    // console.log('@@dates: ', dates);
 
-    const dates: Date[] = [];
-    const priceHistoryIndex: number[] = [];
-    for (let i = 0; i < portfolio.price_history.length; i++) {
-        let date = new Date();
-        date.setDate(date.getDate() + i);
-        dates.push(date);
-        priceHistoryIndex.push(i);
-    }
-    console.log('@@dates: ', dates);
+    // let res: any = dates.map((date: Date, index: number) => {
+    //     return date.getUTCMonth();
+    // });
+    // console.log('@@res: ', res);
+
+    // TODO: dhoward -- dummy code - remove when done
+    // let selectedChartData = selectChartData(dates, priceHistoryIndex);
+    // let labels = generateXAxisLabels(dates);
+    // console.log('@@asdf', selectedChartData);
+    // console.log('@@fdsa', labels);
+    // END TODO: dhoward -- dummy code - remove when done
 
     return (
         <React.Fragment>
@@ -97,20 +104,54 @@ export const PortfolioBuilder = () => {
             <Typography variant="body2" gutterBottom>
                 {text}
             </Typography>
-            {/* <PortfolioGrowthChart portfolio={portfolio} /> */}
-            {/* priceHistoryIndex */}
-            { dates.length > 0 && (
-                <LineChart
-                xAxis={[{ data: dates }]}
-                series={[
-                    {
-                    data: portfolio.price_history,
-                    },
-                ]}
-                width={1000}
-                height={600}
-                />
-            )}
+                { portfolio.priceHistory.length > 0 && (
+                    // <LineChart
+                    // // TODO: dhoward -- we can hardcode the same number of values for the display on x-axis as exists in the data
+                    //     xAxis = {[{
+                    //         scaleType: 'time',
+                    //         // data: generateXAxisLabels(selectChartData(portfolio)),
+                    //         // data: generateXAxisLabels(portfolio)
+                    //         // tickNumber: 10
+                    //         data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.date)
+                    //     }]}
+                    //     yAxis={[
+                    //         {id: 'price', scaleType: 'linear', label: 'Price'}
+                    //     ]}
+                    //     series={[
+                    //         {
+                    //             yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price),
+                    //         },
+                    //     ]}
+                    //     width={1000}
+                    //     height={600}
+                    // />
+
+
+
+                    // <LineChart
+                    //     series={portfolio.priceHistory}
+                    //     width={1000}
+                    //     height={600}
+                    // />
+                    <>
+                        <Typography variant="h1">
+                            {portfolio.priceHistory[portfolio.priceHistory.length - 1].price}
+                        </Typography>
+                        <Grid container>
+                            {
+                                portfolio.priceHistory.map((snapshot: PortfolioSnapshot, index:number) => {
+                                    return (
+                                        <>
+                                            <Grid item xs={12}>
+                                                {snapshot.price}
+                                            </Grid>
+                                        </>
+                                    );
+                                })}
+                        </Grid>
+                    </>
+                )}
+            
             <Form handleSubmit={handleSubmit}>
                 <FormTextInput
                     id={'principalAmount'}
