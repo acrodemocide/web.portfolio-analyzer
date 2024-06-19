@@ -5,6 +5,7 @@ import { Form } from '../components/form/form';
 import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
 import { BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
+import { Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 // import { LineChart } from '@mui/x-charts/LineChart';
 // import { selectChartData, generateXAxisLabels, getPriceHistory } from './portfolio-builder.services';
 
@@ -198,29 +199,33 @@ export const PortfolioBuilder = () => {
                     //     height={600}
                     // />
                     <>
-                        <Typography variant="h3">
+                        <Typography variant="h3" gutterBottom>
                             Final Value: ${portfolio.priceHistory[portfolio.priceHistory.length - 1].price}
                         </Typography>
-                        <Typography variant="h4">
+                        <Typography variant="h4" gutterBottom>
                             Price History:
                         </Typography>
-                        <Grid container>
-                            {
+                        <TableContainer>
+                            <Table sx={{ width: 650 }}>
+                                <TableBody>
+                                {
                                 portfolio.priceHistory.map((snapshot: PortfolioSnapshot, index:number) => {
                                     return (
                                         <>
-                                            <Grid item xs={6}>
-                                                {/* {snapshot.date.toString()} */}
-                                                {/* date.toLocaleString('default', { month: 'long' }); */}
-                                                {`${snapshot.date.toLocaleString('default', { month: 'long' })} ${snapshot.date.getDate()}, ${snapshot.date.getFullYear()}`}
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                ${snapshot.price}
-                                            </Grid>
+                                            <TableRow>
+                                                <TableCell>
+                                                    {`${snapshot.date.toLocaleString('default', { month: 'long' })} ${snapshot.date.getDate()}, ${snapshot.date.getFullYear()}`}
+                                                </TableCell>
+                                                <TableCell>
+                                                    ${snapshot.price}
+                                                </TableCell>
+                                            </TableRow>
                                         </>
                                     );
                                 })}
-                        </Grid>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </>
                 )}
         </React.Fragment>
