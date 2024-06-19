@@ -200,7 +200,9 @@ export const PortfolioBuilder = () => {
                     // />
                     <>
                         <Typography variant="h3" gutterBottom>
-                            Final Value: ${portfolio.priceHistory[portfolio.priceHistory.length - 1].price}
+                            {/* TODO: Final price should be the first price in the array 
+                                (ordered from most recent price to least recent) */}
+                            Final Value: ${portfolio.priceHistory[0].price}
                         </Typography>
                         <Typography variant="h4" gutterBottom>
                             Price History:
