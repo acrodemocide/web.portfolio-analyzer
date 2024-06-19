@@ -5,8 +5,8 @@ import { Form } from '../components/form/form';
 import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
 import { BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
-import { LineChart } from '@mui/x-charts/LineChart';
-import { selectChartData, generateXAxisLabels, getPriceHistory } from './portfolio-builder.services';
+// import { LineChart } from '@mui/x-charts/LineChart';
+// import { selectChartData, generateXAxisLabels, getPriceHistory } from './portfolio-builder.services';
 
 interface StockPick {
     ticker: string;
@@ -104,53 +104,6 @@ export const PortfolioBuilder = () => {
             <Typography variant="body2" gutterBottom>
                 {text}
             </Typography>
-                { portfolio.priceHistory.length > 0 && (
-                    // <LineChart
-                    // // TODO: dhoward -- we can hardcode the same number of values for the display on x-axis as exists in the data
-                    //     xAxis = {[{
-                    //         scaleType: 'time',
-                    //         // data: generateXAxisLabels(selectChartData(portfolio)),
-                    //         // data: generateXAxisLabels(portfolio)
-                    //         // tickNumber: 10
-                    //         data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.date)
-                    //     }]}
-                    //     yAxis={[
-                    //         {id: 'price', scaleType: 'linear', label: 'Price'}
-                    //     ]}
-                    //     series={[
-                    //         {
-                    //             yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price),
-                    //         },
-                    //     ]}
-                    //     width={1000}
-                    //     height={600}
-                    // />
-
-
-
-                    // <LineChart
-                    //     series={portfolio.priceHistory}
-                    //     width={1000}
-                    //     height={600}
-                    // />
-                    <>
-                        <Typography variant="h1">
-                            {portfolio.priceHistory[portfolio.priceHistory.length - 1].price}
-                        </Typography>
-                        <Grid container>
-                            {
-                                portfolio.priceHistory.map((snapshot: PortfolioSnapshot, index:number) => {
-                                    return (
-                                        <>
-                                            <Grid item xs={12}>
-                                                {snapshot.price}
-                                            </Grid>
-                                        </>
-                                    );
-                                })}
-                        </Grid>
-                    </>
-                )}
             
             <Form handleSubmit={handleSubmit}>
                 <FormTextInput
@@ -215,6 +168,61 @@ export const PortfolioBuilder = () => {
                     })}
                 </div>
             </Form>
+            { portfolio.priceHistory.length > 0 && (
+                    // <LineChart
+                    // // TODO: dhoward -- we can hardcode the same number of values for the display on x-axis as exists in the data
+                    //     xAxis = {[{
+                    //         scaleType: 'time',
+                    //         // data: generateXAxisLabels(selectChartData(portfolio)),
+                    //         // data: generateXAxisLabels(portfolio)
+                    //         // tickNumber: 10
+                    //         data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.date)
+                    //     }]}
+                    //     yAxis={[
+                    //         {id: 'price', scaleType: 'linear', label: 'Price'}
+                    //     ]}
+                    //     series={[
+                    //         {
+                    //             yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price),
+                    //         },
+                    //     ]}
+                    //     width={1000}
+                    //     height={600}
+                    // />
+
+
+
+                    // <LineChart
+                    //     series={portfolio.priceHistory}
+                    //     width={1000}
+                    //     height={600}
+                    // />
+                    <>
+                        <Typography variant="h3">
+                            Final Value: ${portfolio.priceHistory[portfolio.priceHistory.length - 1].price}
+                        </Typography>
+                        <Typography variant="h4">
+                            Price History:
+                        </Typography>
+                        <Grid container>
+                            {
+                                portfolio.priceHistory.map((snapshot: PortfolioSnapshot, index:number) => {
+                                    return (
+                                        <>
+                                            <Grid item xs={6}>
+                                                {/* {snapshot.date.toString()} */}
+                                                {/* date.toLocaleString('default', { month: 'long' }); */}
+                                                {`${snapshot.date.toLocaleString('default', { month: 'long' })} ${snapshot.date.getDate()}, ${snapshot.date.getFullYear()}`}
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                ${snapshot.price}
+                                            </Grid>
+                                        </>
+                                    );
+                                })}
+                        </Grid>
+                    </>
+                )}
         </React.Fragment>
     )
 };
