@@ -5,9 +5,7 @@ import { Form } from '../components/form/form';
 import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
 import { BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
-import { Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
-// import { LineChart } from '@mui/x-charts/LineChart';
-// import { selectChartData, generateXAxisLabels, getPriceHistory } from './portfolio-builder.services';
+import { LineChart } from '@mui/x-charts/LineChart';
 
 interface StockPick {
     ticker: string;
@@ -37,7 +35,6 @@ export const PortfolioBuilder = () => {
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState('');
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
-    // const [portfolio, setPortfolio] = useState({ price_history: [] as number[] } as Portfolio);
     const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
 
     const handleTickerChange = (ticker: string, index: number) => {
@@ -74,28 +71,6 @@ export const PortfolioBuilder = () => {
             setPortfolio(response);
         });
     };
-
-    // const dates: Date[] = [];
-    // const priceHistoryIndex: number[] = [];
-    // for (let i = 0; i < portfolio.price_history.length; i++) {
-    //     let date = new Date();
-    //     date.setDate(date.getDate() + i);
-    //     dates.push(date);
-    //     priceHistoryIndex.push(i);
-    // }
-    // console.log('@@dates: ', dates);
-
-    // let res: any = dates.map((date: Date, index: number) => {
-    //     return date.getUTCMonth();
-    // });
-    // console.log('@@res: ', res);
-
-    // TODO: dhoward -- dummy code - remove when done
-    // let selectedChartData = selectChartData(dates, priceHistoryIndex);
-    // let labels = generateXAxisLabels(dates);
-    // console.log('@@asdf', selectedChartData);
-    // console.log('@@fdsa', labels);
-    // END TODO: dhoward -- dummy code - remove when done
 
     return (
         <React.Fragment>
@@ -170,65 +145,25 @@ export const PortfolioBuilder = () => {
                 </div>
             </Form>
             { portfolio.priceHistory.length > 0 && (
-                    // <LineChart
-                    // // TODO: dhoward -- we can hardcode the same number of values for the display on x-axis as exists in the data
-                    //     xAxis = {[{
-                    //         scaleType: 'time',
-                    //         // data: generateXAxisLabels(selectChartData(portfolio)),
-                    //         // data: generateXAxisLabels(portfolio)
-                    //         // tickNumber: 10
-                    //         data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.date)
-                    //     }]}
-                    //     yAxis={[
-                    //         {id: 'price', scaleType: 'linear', label: 'Price'}
-                    //     ]}
-                    //     series={[
-                    //         {
-                    //             yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price),
-                    //         },
-                    //     ]}
-                    //     width={1000}
-                    //     height={600}
-                    // />
-
-
-
-                    // <LineChart
-                    //     series={portfolio.priceHistory}
-                    //     width={1000}
-                    //     height={600}
-                    // />
-                    <>
-                        <Typography variant="h3" gutterBottom>
-                            {/* TODO: Final price should be the first price in the array 
-                                (ordered from most recent price to least recent) */}
-                            Final Value: ${portfolio.priceHistory[0].price}
-                        </Typography>
-                        <Typography variant="h4" gutterBottom>
-                            Price History:
-                        </Typography>
-                        <TableContainer>
-                            <Table sx={{ width: 650 }}>
-                                <TableBody>
-                                {
-                                portfolio.priceHistory.map((snapshot: PortfolioSnapshot, index:number) => {
-                                    return (
-                                        <>
-                                            <TableRow>
-                                                <TableCell>
-                                                    {`${snapshot.date.toLocaleString('default', { month: 'long' })} ${snapshot.date.getDate()}, ${snapshot.date.getFullYear()}`}
-                                                </TableCell>
-                                                <TableCell>
-                                                    ${snapshot.price}
-                                                </TableCell>
-                                            </TableRow>
-                                        </>
-                                    );
-                                })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </>
+                // For some reason, the line chart expects dates to be in the reverse order
+                //  than how they are stored in the portfolio object. This is why we reverse
+                //  the date array before passing it to the LineChart component.
+                    <LineChart
+                        xAxis = {[{
+                            scaleType: 'time',
+                            data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.date).reverse()
+                        }]}
+                        yAxis={[
+                            {id: 'price', scaleType: 'linear', label: 'Price'}
+                        ]}
+                        series={[
+                            {
+                                yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price).reverse(),
+                            },
+                        ]}
+                        width={1000}
+                        height={600}
+                    />
                 )}
         </React.Fragment>
     )
