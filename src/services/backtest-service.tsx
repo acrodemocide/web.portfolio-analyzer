@@ -9,16 +9,15 @@ export type Portfolio = {
     priceHistory: PortfolioSnapshot[]
 };
 
-export const BacktestPortfolio = (): Promise<Portfolio> => {
-    // TODO: dhoward -- this is a placeholder for the actual body
-    const body = {
-        "stocks": {
-            "asdf": 0.25,
-            "fdsa": 0.75
-        },
-        "strategy": "new_algorithm"
-    };
-    return axios.post('http://localhost:8000/stocks/backtest/', body).then((response) => {
+export type BackTestRequest = {
+    stocks: {
+        [ticker: string]: number
+    },
+    strategy: string
+};
+
+export const BacktestPortfolio = (request: BackTestRequest): Promise<Portfolio> => {
+    return axios.post('http://localhost:8000/stocks/backtest/', request).then((response) => {
         let portfolio = {
             priceHistory: [] as PortfolioSnapshot[]
         };

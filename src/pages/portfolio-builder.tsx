@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import { Form } from '../components/form/form';
 import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
-import { BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
+import { BackTestRequest, BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
 import { LineChart } from '@mui/x-charts/LineChart';
 
 interface StockPick {
@@ -64,10 +64,19 @@ export const PortfolioBuilder = () => {
             stockPicksStr += str;
         });
 
+        const filteredStockPicks = stockPicks.filter((x) => x.ticker !== '' && x.percent !== '');
+        const backTestRequest: BackTestRequest = {
+            stocks: {},
+            strategy: 'new_algorithm'
+        }
+        filteredStockPicks.forEach((x) => {
+            backTestRequest.stocks[x.ticker] = parseFloat(x.percent) / 100.0;
+        });
+
         const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${stockPicksStr}`;
 
         console.log('@@message: ', message);
-        BacktestPortfolio().then((response) => {
+        BacktestPortfolio(backTestRequest).then((response) => {
             setPortfolio(response);
         });
     };
