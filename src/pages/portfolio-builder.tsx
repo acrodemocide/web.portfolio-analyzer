@@ -4,8 +4,8 @@ import Grid from '@mui/material/Grid';
 import { Form } from '../components/form/form';
 import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
-import { BacktestPortfolio, Portfolio } from '../services/backtest-service';
-import { PortfolioGrowthChart } from '../components/portfolio-growth-chart/portfolio-growth-chart';
+import { BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
+import { LineChart } from '@mui/x-charts/LineChart';
 
 interface StockPick {
     ticker: string;
@@ -35,7 +35,7 @@ export const PortfolioBuilder = () => {
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState('');
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
-    const [portfolio, setPortfolio] = useState({ price_history: [] as number[] } as Portfolio);
+    const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
 
     const handleTickerChange = (ticker: string, index: number) => {
         let stockPick: StockPick = stockPicks[index];
@@ -80,6 +80,7 @@ export const PortfolioBuilder = () => {
             <Typography variant="body2" gutterBottom>
                 {text}
             </Typography>
+            
             <Form handleSubmit={handleSubmit}>
                 <FormTextInput
                     id={'principalAmount'}
@@ -143,7 +144,24 @@ export const PortfolioBuilder = () => {
                     })}
                 </div>
             </Form>
-            <PortfolioGrowthChart portfolio={portfolio} />
+            { portfolio.priceHistory.length > 0 && (
+                    <LineChart
+                        xAxis = {[{
+                            scaleType: 'time',
+                            data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.date)
+                        }]}
+                        yAxis={[
+                            {id: 'price', scaleType: 'linear', label: 'Price'}
+                        ]}
+                        series={[
+                            {
+                                yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price),
+                            },
+                        ]}
+                        width={1000}
+                        height={600}
+                    />
+                )}
         </React.Fragment>
     )
 };
