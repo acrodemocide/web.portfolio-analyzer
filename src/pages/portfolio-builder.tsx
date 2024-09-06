@@ -148,6 +148,7 @@ export const PortfolioBuilder = () => {
                 // For some reason, the line chart expects dates to be in the reverse order
                 //  than how they are stored in the portfolio object. This is why we reverse
                 //  the date array before passing it to the LineChart component.
+                // See: https://stackoverflow.com/questions/78419457/why-is-my-mui-x-line-chart-only-showing-the-last-value-when-hovering-on-any-of-t
                     <LineChart
                         xAxis = {[{
                             scaleType: 'time',
