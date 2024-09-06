@@ -19,7 +19,6 @@ export const BacktestPortfolio = (): Promise<Portfolio> => {
         "strategy": "new_algorithm"
     };
     return axios.post('http://localhost:8000/stocks/backtest/', body).then((response) => {
-        // const price_history: number[] = [];
         let portfolio = {
             priceHistory: [] as PortfolioSnapshot[]
         };
@@ -30,10 +29,7 @@ export const BacktestPortfolio = (): Promise<Portfolio> => {
             };
 
             portfolio.priceHistory.push(snapshot);
-            // price_history.push(snapshots[key]);
         }
-        // return { price_history };
-        console.log('@@portfolio', portfolio);
         return portfolio;
     });
 };
