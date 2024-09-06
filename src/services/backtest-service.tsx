@@ -29,7 +29,13 @@ export const BacktestPortfolio = (): Promise<Portfolio> => {
             };
 
             portfolio.priceHistory.push(snapshot);
+            
         }
+
+        portfolio.priceHistory.sort((a: PortfolioSnapshot, b: PortfolioSnapshot) => {
+            return a.date.getTime() - b.date.getTime();
+        });
+
         return portfolio;
     });
 };
