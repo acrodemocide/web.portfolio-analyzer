@@ -50,33 +50,16 @@ export const PortfolioBuilder = () => {
     };
 
     const handleSubmit = () => {
-        const header = 'Submitted!\n';
-        const principalAmountStr = `principalAmount: ${formPrincipalAmount}\n`;
-        const startYearStr = `startYear: ${formStartYear}\n`;
-        const endYearStr = `endYear: ${formEndYear}\n`;
-        const benchMarkStr = `benchMark: ${formBenchMark}\n`;
-
-        let stockPicksStr = 'STOCK PICKS:\n';
-        stockPicks.forEach((x, index) => {
-            let str = `${index} -- Ticker: ${x.ticker === '' ? '[empty]' : x.ticker}, Percent: ${
-                x.percent === '' ? '[empty]' : x.percent
-            }\n`;
-            stockPicksStr += str;
-        });
-
         const filteredStockPicks = stockPicks.filter((x) => x.ticker !== '' && x.percent !== '');
         const backTestRequest: BackTestRequest = {
             stocks: {},
             // strategy: 'new_algorithm'
-            strategy: 'buy_and_hold'
+            strategy: 'buy_and_hold',
+            initial_value: parseFloat(formPrincipalAmount),
         }
         filteredStockPicks.forEach((x) => {
             backTestRequest.stocks[x.ticker] = parseFloat(x.percent) / 100.0;
         });
-
-        const message = `${header}${principalAmountStr}${startYearStr}${endYearStr}${benchMarkStr}${stockPicksStr}`;
-
-        console.log('@@message: ', message);
         BacktestPortfolio(backTestRequest).then((response) => {
             setPortfolio(response);
         });
@@ -155,7 +138,9 @@ export const PortfolioBuilder = () => {
                 </div>
             </Form>
             { portfolio.priceHistory.length > 0 && (
+                <div style={{marginLeft: '30px'}}>
                     <LineChart
+                        sx={{padding:'15px'}}
                         xAxis = {[{
                             scaleType: 'time',
                             data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.date)
@@ -168,9 +153,10 @@ export const PortfolioBuilder = () => {
                                 yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price),
                             },
                         ]}
-                        width={1000}
+                        width={1300}
                         height={600}
                     />
+                </div>
                 )}
         </React.Fragment>
     )
