@@ -67,7 +67,8 @@ export const PortfolioBuilder = () => {
         const filteredStockPicks = stockPicks.filter((x) => x.ticker !== '' && x.percent !== '');
         const backTestRequest: BackTestRequest = {
             stocks: {},
-            strategy: 'new_algorithm'
+            // strategy: 'new_algorithm'
+            strategy: 'buy_and_hold'
         }
         filteredStockPicks.forEach((x) => {
             backTestRequest.stocks[x.ticker] = parseFloat(x.percent) / 100.0;
