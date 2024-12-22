@@ -13,7 +13,8 @@ export type BackTestRequest = {
     stocks: {
         [ticker: string]: number
     },
-    strategy: string
+    strategy: string,
+    initial_value: number,
 };
 
 export const BacktestPortfolio = (request: BackTestRequest): Promise<Portfolio> => {
