@@ -37,6 +37,12 @@ export const PortfolioBuilder = () => {
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
 
+    const generateYears = () => {
+        let currentYear = new Date().getFullYear();
+        const lookBackYears = 50;
+        return Array.from({ length: lookBackYears }, (_, i) => (currentYear - i).toString());
+    };
+
     const handleTickerChange = (ticker: string, index: number) => {
         let stockPick: StockPick = stockPicks[index];
         stockPicks[index] = { ...stockPick, ticker };
@@ -56,6 +62,8 @@ export const PortfolioBuilder = () => {
             // strategy: 'new_algorithm'
             strategy: 'buy_and_hold',
             initial_value: parseFloat(formPrincipalAmount),
+            start_date: new Date(parseInt(formStartYear), 0, 1),
+            end_date: new Date(parseInt(formEndYear), 11, 31),
         }
         filteredStockPicks.forEach((x) => {
             backTestRequest.stocks[x.ticker] = parseFloat(x.percent) / 100.0;
@@ -83,7 +91,7 @@ export const PortfolioBuilder = () => {
                 />
                 <FormSelectInput
                     label={'Start Year'}
-                    menuItems={['2019', '2020', '2021']}
+                    menuItems={generateYears()}
                     value={formStartYear}
                     onChange={(e) => {
                         setFormStartYear(e.target.value);
@@ -91,7 +99,7 @@ export const PortfolioBuilder = () => {
                 />
                 <FormSelectInput
                     label={'End Year'}
-                    menuItems={['2020', '2021', '2022']}
+                    menuItems={generateYears()}
                     value={formEndYear}
                     onChange={(e) => {
                         setFormEndYear(e.target.value);
