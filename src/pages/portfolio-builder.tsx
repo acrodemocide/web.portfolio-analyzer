@@ -87,7 +87,10 @@ export const PortfolioBuilder = () => {
                     id={'principalAmount'}
                     label={'Principal Amount'}
                     value={formPrincipalAmount}
-                    onChange={(e) => setFormPrincipalAmount(e.target.value)}
+                    onChange={(e) => {
+                        if ((!isNaN(parseFloat(e.target.value)) || e.target.value === '')) {
+                        setFormPrincipalAmount(e.target.value)
+                    }}}
                 />
                 <FormSelectInput
                     label={'Start Year'}
