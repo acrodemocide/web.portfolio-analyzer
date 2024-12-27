@@ -15,6 +15,8 @@ export type BackTestRequest = {
     },
     strategy: string,
     initial_value: number,
+    start_date: Date,
+    end_date: Date,
 };
 
 export const BacktestPortfolio = (request: BackTestRequest): Promise<Portfolio> => {
