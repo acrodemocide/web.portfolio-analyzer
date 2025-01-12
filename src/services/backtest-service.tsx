@@ -6,7 +6,8 @@ export type PortfolioSnapshot = {
 }
 
 export type Portfolio = {
-    priceHistory: PortfolioSnapshot[]
+    priceHistory: PortfolioSnapshot[];
+    benchmark: PortfolioSnapshot[];
 };
 
 export type BackTestRequest = {
@@ -17,12 +18,14 @@ export type BackTestRequest = {
     initial_value: number,
     start_date: Date,
     end_date: Date,
+    benchmark_ticker: string,
 };
 
 export const BacktestPortfolio = (request: BackTestRequest): Promise<Portfolio> => {
     return axios.post('http://localhost:8000/stocks/backtest/', request).then((response) => {
         let portfolio = {
-            priceHistory: [] as PortfolioSnapshot[]
+            priceHistory: [] as PortfolioSnapshot[],
+            benchmark: [] as PortfolioSnapshot[],
         };
         for (let key in response.data.snapshots) {
             let snapshot: PortfolioSnapshot = {
@@ -31,7 +34,14 @@ export const BacktestPortfolio = (request: BackTestRequest): Promise<Portfolio> 
             };
 
             portfolio.priceHistory.push(snapshot);
-            
+        }
+        for (let key in response.data.benchmark) {
+            let snapshot: PortfolioSnapshot = {
+                date: new Date(key),
+                price: response.data.benchmark[key],
+            };
+
+            portfolio.benchmark.push(snapshot);
         }
 
         portfolio.priceHistory.sort((a: PortfolioSnapshot, b: PortfolioSnapshot) => {

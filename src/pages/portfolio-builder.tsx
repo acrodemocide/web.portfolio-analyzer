@@ -30,12 +30,15 @@ export const PortfolioBuilder = () => {
         });
     }
 
+    const benchMarkMenuItems: string[] = ['None', 'S&P 500', 'DJIA', 'NASDAQ 100']
+
     const [formPrincipalAmount, setFormPrincipalAmount] = useState('');
     const [formStartYear, setFormStartYear] = useState('');
     const [formEndYear, setFormEndYear] = useState('');
-    const [formBenchMark, setFormBenchMark] = useState('');
+    const [formBenchMark, setFormBenchMark] = useState(benchMarkMenuItems[0]);
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
+    const [calculatedBenchmark, setCalculatedBenchmark] = useState('');
 
     const generateYears = () => {
         let currentYear = new Date().getFullYear();
@@ -55,21 +58,37 @@ export const PortfolioBuilder = () => {
         setStockPicks([...stockPicks]);
     };
 
+    const convertBenchrmarkToTicker = (benchmark: string) => {
+        switch(benchmark) {
+            case 'S&P 500':
+                return 'SPY';
+            case 'DJIA':
+                return 'DIA';
+            case 'NASDAQ 100':
+                return 'QQQ';
+            case 'None':
+                return '';
+            default:
+                return '';
+        }
+    }
+
     const handleSubmit = () => {
         const filteredStockPicks = stockPicks.filter((x) => x.ticker !== '' && x.percent !== '');
         const backTestRequest: BackTestRequest = {
             stocks: {},
-            // strategy: 'new_algorithm'
             strategy: 'buy_and_hold',
             initial_value: parseFloat(formPrincipalAmount),
             start_date: new Date(parseInt(formStartYear), 0, 1),
             end_date: new Date(parseInt(formEndYear), 11, 31),
+            benchmark_ticker: convertBenchrmarkToTicker(formBenchMark),
         }
         filteredStockPicks.forEach((x) => {
             backTestRequest.stocks[x.ticker] = parseFloat(x.percent) / 100.0;
         });
         BacktestPortfolio(backTestRequest).then((response) => {
             setPortfolio(response);
+            setCalculatedBenchmark(formBenchMark);
         });
     };
 
@@ -110,11 +129,9 @@ export const PortfolioBuilder = () => {
                 />
                 <FormSelectInput
                     label={'Bench Mark'}
-                    menuItems={['S&P 500', 'DJIA', 'NASDAQ']}
+                    menuItems={benchMarkMenuItems}
                     value={formBenchMark}
-                    onChange={(e) => {
-                        setFormBenchMark(e.target.value);
-                    }}
+                    onChange={e =>  setFormBenchMark(e.target.value)}
                 />
                 <Typography variant="h3" gutterBottom>
                     Select your stocks
@@ -161,8 +178,11 @@ export const PortfolioBuilder = () => {
                         ]}
                         series={[
                             {
-                                yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price),
+                                yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price), color: 'blue', showMark: false, label: 'Portfolio',
                             },
+                            {
+                                yAxisKey: 'price', data: portfolio.benchmark.map((p: PortfolioSnapshot) => p.price), color: 'red', showMark: false, label: calculatedBenchmark === 'None' ? undefined : `${calculatedBenchmark}`,
+                            }
                         ]}
                         width={1300}
                         height={600}
