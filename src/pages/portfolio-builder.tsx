@@ -30,7 +30,7 @@ export const PortfolioBuilder = () => {
         });
     }
 
-    const benchMarkMenuItems: string[] = ['S&P 500', 'DJIA', 'NASDAQ 100']
+    const benchMarkMenuItems: string[] = ['None', 'S&P 500', 'DJIA', 'NASDAQ 100']
 
     const [formPrincipalAmount, setFormPrincipalAmount] = useState('');
     const [formStartYear, setFormStartYear] = useState('');
@@ -66,8 +66,10 @@ export const PortfolioBuilder = () => {
                 return 'DIA';
             case 'NASDAQ 100':
                 return 'QQQ';
+            case 'None':
+                return '';
             default:
-                return 'SPY';
+                return '';
         }
     }
 
@@ -179,7 +181,7 @@ export const PortfolioBuilder = () => {
                                 yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price), color: 'blue', showMark: false, label: 'Portfolio',
                             },
                             {
-                                yAxisKey: 'price', data: portfolio.benchmark.map((p: PortfolioSnapshot) => p.price), color: 'red', showMark: false, label: `${calculatedBenchmark}`,
+                                yAxisKey: 'price', data: portfolio.benchmark.map((p: PortfolioSnapshot) => p.price), color: 'red', showMark: false, label: calculatedBenchmark === 'None' ? undefined : `${calculatedBenchmark}`,
                             }
                         ]}
                         width={1300}
