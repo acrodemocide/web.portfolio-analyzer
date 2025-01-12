@@ -38,6 +38,7 @@ export const PortfolioBuilder = () => {
     const [formBenchMark, setFormBenchMark] = useState(benchMarkMenuItems[0]);
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
+    const [calculatedBenchmark, setCalculatedBenchmark] = useState('');
 
     const generateYears = () => {
         let currentYear = new Date().getFullYear();
@@ -85,6 +86,7 @@ export const PortfolioBuilder = () => {
         });
         BacktestPortfolio(backTestRequest).then((response) => {
             setPortfolio(response);
+            setCalculatedBenchmark(formBenchMark);
         });
     };
 
@@ -172,13 +174,12 @@ export const PortfolioBuilder = () => {
                         yAxis={[
                             {id: 'price', scaleType: 'linear', label: 'Price'}
                         ]}
-                        // TODO: dhoward -- let's try to make this adaptive to how many data points were returned from API.
                         series={[
                             {
-                                yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price), color: 'blue', showMark: ({ index }) => index % 50 === 0,
+                                yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price), color: 'blue', showMark: false, label: 'Portfolio',
                             },
                             {
-                                yAxisKey: 'price', data: portfolio.benchmark.map((p: PortfolioSnapshot) => p.price), color: 'red', showMark: ({ index }) => index % 50 === 0,
+                                yAxisKey: 'price', data: portfolio.benchmark.map((p: PortfolioSnapshot) => p.price), color: 'red', showMark: false, label: `${calculatedBenchmark}`,
                             }
                         ]}
                         width={1300}
