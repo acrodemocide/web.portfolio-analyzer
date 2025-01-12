@@ -74,18 +74,15 @@ export const PortfolioBuilder = () => {
         const filteredStockPicks = stockPicks.filter((x) => x.ticker !== '' && x.percent !== '');
         const backTestRequest: BackTestRequest = {
             stocks: {},
-            // strategy: 'new_algorithm'
             strategy: 'buy_and_hold',
             initial_value: parseFloat(formPrincipalAmount),
             start_date: new Date(parseInt(formStartYear), 0, 1),
             end_date: new Date(parseInt(formEndYear), 11, 31),
-            // benchmark_ticker: convertBenchrmarkToTicker(formBenchMark),
-            benchmark_ticker: {},
+            benchmark_ticker: convertBenchrmarkToTicker(formBenchMark),
         }
         filteredStockPicks.forEach((x) => {
             backTestRequest.stocks[x.ticker] = parseFloat(x.percent) / 100.0;
         });
-        backTestRequest.benchmark_ticker[convertBenchrmarkToTicker(formBenchMark)] = 1.0;
         BacktestPortfolio(backTestRequest).then((response) => {
             setPortfolio(response);
         });
@@ -128,7 +125,6 @@ export const PortfolioBuilder = () => {
                 />
                 <FormSelectInput
                     label={'Bench Mark'}
-                    // menuItems={['S&P 500', 'DJIA', 'NASDAQ 100']}
                     menuItems={benchMarkMenuItems}
                     value={formBenchMark}
                     onChange={e =>  setFormBenchMark(e.target.value)}
@@ -176,12 +172,13 @@ export const PortfolioBuilder = () => {
                         yAxis={[
                             {id: 'price', scaleType: 'linear', label: 'Price'}
                         ]}
+                        // TODO: dhoward -- let's try to make this adaptive to how many data points were returned from API.
                         series={[
                             {
-                                yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price),
+                                yAxisKey: 'price', data: portfolio.priceHistory.map((p: PortfolioSnapshot) => p.price), color: 'blue', showMark: ({ index }) => index % 50 === 0,
                             },
                             {
-                                yAxisKey: 'price', data: portfolio.benchmark.map((p: PortfolioSnapshot) => p.price),
+                                yAxisKey: 'price', data: portfolio.benchmark.map((p: PortfolioSnapshot) => p.price), color: 'red', showMark: ({ index }) => index % 50 === 0,
                             }
                         ]}
                         width={1300}

@@ -18,9 +18,7 @@ export type BackTestRequest = {
     initial_value: number,
     start_date: Date,
     end_date: Date,
-    benchmark_ticker: {
-        [ticker: string]: number
-    },
+    benchmark_ticker: string,
 };
 
 export const BacktestPortfolio = (request: BackTestRequest): Promise<Portfolio> => {
