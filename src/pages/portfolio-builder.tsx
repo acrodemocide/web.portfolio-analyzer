@@ -7,12 +7,6 @@ import { FormSelectInput } from '../components/form/form-fields/form-select-inpu
 import { BackTestRequest, BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { TextField } from '@mui/material';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { AdapterDate } from '@mui/x-date-pickers/AdapterDate';
-
-
 
 interface StockPick {
     ticker: string;
@@ -40,15 +34,11 @@ export const PortfolioBuilder = () => {
     const benchMarkMenuItems: string[] = ['None', 'S&P 500', 'DJIA', 'NASDAQ 100']
 
     const [formPrincipalAmount, setFormPrincipalAmount] = useState('');
-    // const [formStartYear, setFormStartYear] = useState('');
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState(benchMarkMenuItems[0]);
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
     const [calculatedBenchmark, setCalculatedBenchmark] = useState('');
-    // const [formStartDate, setFormStartDate] = useState(
-    //     new Date().toISOString().slice(0, 10) // Format: 'YYYY-MM-DD'
-    //   );
     const [formStartDate, setFormStartDate] = useState(new Date());
 
     const generateYears = () => {
@@ -132,13 +122,6 @@ export const PortfolioBuilder = () => {
                         shrink: true,
                       }}
                     />
-                {/* <LocalizationProvider dateAdapter={AdapterDate}>
-                    <DatePicker
-                    label="Controlled picker"
-                    value={formStartDate}
-                    onChange={(newValue) => setFormStartDate(newValue ?? new Date())}
-                    />
-                </LocalizationProvider> */}
                 {/* <FormSelectInput
                     label={'Start Year'}
                     menuItems={generateYears()}
