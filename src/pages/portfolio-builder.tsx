@@ -34,19 +34,12 @@ export const PortfolioBuilder = () => {
     const benchMarkMenuItems: string[] = ['None', 'S&P 500', 'DJIA', 'NASDAQ 100']
 
     const [formPrincipalAmount, setFormPrincipalAmount] = useState('');
-    // const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState(benchMarkMenuItems[0]);
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
     const [calculatedBenchmark, setCalculatedBenchmark] = useState('');
     const [formStartDate, setFormStartDate] = useState(new Date());
     const [formEndDate, setFormEndDate] = useState(new Date());
-
-    // const generateYears = () => {
-    //     let currentYear = new Date().getFullYear();
-    //     const lookBackYears = 50;
-    //     return Array.from({ length: lookBackYears }, (_, i) => (currentYear - i).toString());
-    // };
 
     const handleTickerChange = (ticker: string, index: number) => {
         let stockPick: StockPick = stockPicks[index];
@@ -82,7 +75,6 @@ export const PortfolioBuilder = () => {
             strategy: 'buy_and_hold',
             initial_value: parseFloat(formPrincipalAmount),
             start_date: formStartDate,
-            // end_date: new Date(parseInt(formEndYear), 11, 31),
             end_date: formEndDate,
             benchmark_ticker: convertBenchmarkToTicker(formBenchMark),
         }
@@ -124,15 +116,6 @@ export const PortfolioBuilder = () => {
                         shrink: true,
                       }}
                     />
-                {/* <FormSelectInput
-                    label={'Start Year'}
-                    menuItems={generateYears()}
-                    value={formStartYear}
-                    onChange={(e) => {
-                        setFormStartYear(e.target.value);
-                    }}
-                /> */}
-                {/* // [formEndDate, setFormEndDate] */}
                 <TextField
                     sx={{marginBottom: '10px'}}
                       label="Select End Date"
@@ -143,14 +126,6 @@ export const PortfolioBuilder = () => {
                         shrink: true,
                       }}
                     />
-                {/* <FormSelectInput
-                    label={'End Year'}
-                    menuItems={generateYears()}
-                    value={formEndYear}
-                    onChange={(e) => {
-                        setFormEndYear(e.target.value);
-                    }}
-                /> */}
                 <FormSelectInput
                     label={'Bench Mark'}
                     menuItems={benchMarkMenuItems}
