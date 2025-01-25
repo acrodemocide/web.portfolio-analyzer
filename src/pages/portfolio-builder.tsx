@@ -40,15 +40,16 @@ export const PortfolioBuilder = () => {
     const benchMarkMenuItems: string[] = ['None', 'S&P 500', 'DJIA', 'NASDAQ 100']
 
     const [formPrincipalAmount, setFormPrincipalAmount] = useState('');
-    const [formStartYear, setFormStartYear] = useState('');
+    // const [formStartYear, setFormStartYear] = useState('');
     const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState(benchMarkMenuItems[0]);
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
     const [calculatedBenchmark, setCalculatedBenchmark] = useState('');
-    const [formStartDate, setFormStartDate] = useState(
-        new Date().toISOString().slice(0, 10) // Format: 'YYYY-MM-DD'
-      );
+    // const [formStartDate, setFormStartDate] = useState(
+    //     new Date().toISOString().slice(0, 10) // Format: 'YYYY-MM-DD'
+    //   );
+    const [formStartDate, setFormStartDate] = useState(new Date());
 
     const generateYears = () => {
         let currentYear = new Date().getFullYear();
@@ -68,7 +69,7 @@ export const PortfolioBuilder = () => {
         setStockPicks([...stockPicks]);
     };
 
-    const convertBenchrmarkToTicker = (benchmark: string) => {
+    const convertBenchmarkToTicker = (benchmark: string) => {
         switch(benchmark) {
             case 'S&P 500':
                 return 'SPY';
@@ -89,9 +90,10 @@ export const PortfolioBuilder = () => {
             stocks: {},
             strategy: 'buy_and_hold',
             initial_value: parseFloat(formPrincipalAmount),
-            start_date: new Date(parseInt(formStartYear), 0, 1),
+            // start_date: new Date(parseInt(formStartYear), 0, 1),
+            start_date: formStartDate,
             end_date: new Date(parseInt(formEndYear), 11, 31),
-            benchmark_ticker: convertBenchrmarkToTicker(formBenchMark),
+            benchmark_ticker: convertBenchmarkToTicker(formBenchMark),
         }
         filteredStockPicks.forEach((x) => {
             backTestRequest.stocks[x.ticker] = parseFloat(x.percent) / 100.0;
@@ -122,7 +124,7 @@ export const PortfolioBuilder = () => {
                     }}}
                 />
                 <TextField
-                      label="Controlled Picker"
+                      label="Select Start Date"
                       type="date"
                       value={formStartDate}
                       onChange={(e: any) => setFormStartDate(e.target.value)}
@@ -137,14 +139,14 @@ export const PortfolioBuilder = () => {
                     onChange={(newValue) => setFormStartDate(newValue ?? new Date())}
                     />
                 </LocalizationProvider> */}
-                <FormSelectInput
+                {/* <FormSelectInput
                     label={'Start Year'}
                     menuItems={generateYears()}
                     value={formStartYear}
                     onChange={(e) => {
                         setFormStartYear(e.target.value);
                     }}
-                />
+                /> */}
                 <FormSelectInput
                     label={'End Year'}
                     menuItems={generateYears()}
