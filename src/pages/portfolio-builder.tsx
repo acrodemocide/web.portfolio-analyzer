@@ -6,6 +6,13 @@ import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
 import { BackTestRequest, BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
 import { LineChart } from '@mui/x-charts/LineChart';
+import { TextField } from '@mui/material';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { AdapterDate } from '@mui/x-date-pickers/AdapterDate';
+
+
 
 interface StockPick {
     ticker: string;
@@ -39,6 +46,9 @@ export const PortfolioBuilder = () => {
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
     const [calculatedBenchmark, setCalculatedBenchmark] = useState('');
+    const [formStartDate, setFormStartDate] = useState(
+        new Date().toISOString().slice(0, 10) // Format: 'YYYY-MM-DD'
+      );
 
     const generateYears = () => {
         let currentYear = new Date().getFullYear();
@@ -111,6 +121,22 @@ export const PortfolioBuilder = () => {
                         setFormPrincipalAmount(e.target.value)
                     }}}
                 />
+                <TextField
+                      label="Controlled Picker"
+                      type="date"
+                      value={formStartDate}
+                      onChange={(e: any) => setFormStartDate(e.target.value)}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                {/* <LocalizationProvider dateAdapter={AdapterDate}>
+                    <DatePicker
+                    label="Controlled picker"
+                    value={formStartDate}
+                    onChange={(newValue) => setFormStartDate(newValue ?? new Date())}
+                    />
+                </LocalizationProvider> */}
                 <FormSelectInput
                     label={'Start Year'}
                     menuItems={generateYears()}
