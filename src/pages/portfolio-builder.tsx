@@ -80,7 +80,6 @@ export const PortfolioBuilder = () => {
             stocks: {},
             strategy: 'buy_and_hold',
             initial_value: parseFloat(formPrincipalAmount),
-            // start_date: new Date(parseInt(formStartYear), 0, 1),
             start_date: formStartDate,
             end_date: new Date(parseInt(formEndYear), 11, 31),
             benchmark_ticker: convertBenchmarkToTicker(formBenchMark),
