@@ -6,6 +6,7 @@ import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
 import { BackTestRequest, BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
 import { LineChart } from '@mui/x-charts/LineChart';
+import { TextField } from '@mui/material';
 
 interface StockPick {
     ticker: string;
@@ -33,18 +34,12 @@ export const PortfolioBuilder = () => {
     const benchMarkMenuItems: string[] = ['None', 'S&P 500', 'DJIA', 'NASDAQ 100']
 
     const [formPrincipalAmount, setFormPrincipalAmount] = useState('');
-    const [formStartYear, setFormStartYear] = useState('');
-    const [formEndYear, setFormEndYear] = useState('');
     const [formBenchMark, setFormBenchMark] = useState(benchMarkMenuItems[0]);
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
     const [calculatedBenchmark, setCalculatedBenchmark] = useState('');
-
-    const generateYears = () => {
-        let currentYear = new Date().getFullYear();
-        const lookBackYears = 50;
-        return Array.from({ length: lookBackYears }, (_, i) => (currentYear - i).toString());
-    };
+    const [formStartDate, setFormStartDate] = useState(new Date());
+    const [formEndDate, setFormEndDate] = useState(new Date());
 
     const handleTickerChange = (ticker: string, index: number) => {
         let stockPick: StockPick = stockPicks[index];
@@ -58,7 +53,7 @@ export const PortfolioBuilder = () => {
         setStockPicks([...stockPicks]);
     };
 
-    const convertBenchrmarkToTicker = (benchmark: string) => {
+    const convertBenchmarkToTicker = (benchmark: string) => {
         switch(benchmark) {
             case 'S&P 500':
                 return 'SPY';
@@ -79,9 +74,9 @@ export const PortfolioBuilder = () => {
             stocks: {},
             strategy: 'buy_and_hold',
             initial_value: parseFloat(formPrincipalAmount),
-            start_date: new Date(parseInt(formStartYear), 0, 1),
-            end_date: new Date(parseInt(formEndYear), 11, 31),
-            benchmark_ticker: convertBenchrmarkToTicker(formBenchMark),
+            start_date: formStartDate,
+            end_date: formEndDate,
+            benchmark_ticker: convertBenchmarkToTicker(formBenchMark),
         }
         filteredStockPicks.forEach((x) => {
             backTestRequest.stocks[x.ticker] = parseFloat(x.percent) / 100.0;
@@ -111,22 +106,26 @@ export const PortfolioBuilder = () => {
                         setFormPrincipalAmount(e.target.value)
                     }}}
                 />
-                <FormSelectInput
-                    label={'Start Year'}
-                    menuItems={generateYears()}
-                    value={formStartYear}
-                    onChange={(e) => {
-                        setFormStartYear(e.target.value);
-                    }}
-                />
-                <FormSelectInput
-                    label={'End Year'}
-                    menuItems={generateYears()}
-                    value={formEndYear}
-                    onChange={(e) => {
-                        setFormEndYear(e.target.value);
-                    }}
-                />
+                <TextField
+                    sx={{marginBottom: '10px'}}
+                      label="Select Start Date"
+                      type="date"
+                      value={formStartDate}
+                      onChange={(e: any) => setFormStartDate(e.target.value)}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                <TextField
+                    sx={{marginBottom: '10px'}}
+                      label="Select End Date"
+                      type="date"
+                      value={formEndDate}
+                      onChange={(e: any) => setFormEndDate(e.target.value)}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
                 <FormSelectInput
                     label={'Bench Mark'}
                     menuItems={benchMarkMenuItems}
