@@ -115,7 +115,11 @@ export const PortfolioBuilder = () => {
                 {text}
             </Typography>
             
-            <Form handleSubmit={handleSubmit}>
+            <Form 
+                handleSubmit={handleSubmit}
+                disabled={totalPercentage !== 100}
+                disabledTooltip="Portfolio allocation must equal exactly 100% before saving"
+            >
                 <FormTextInput
                     id={'principalAmount'}
                     label={'Principal Amount'}
