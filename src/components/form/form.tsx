@@ -1,10 +1,14 @@
 import { Grid } from '@mui/material';
 import { styled } from '@mui/system';
 import { ButtonPrimary } from '../buttons/button-primary';
+import { Tooltip } from '@mui/material';
 
 export interface FormProps {
     handleSubmit: (arg: any) => void;
     children?: JSX.Element[];
+    disabled?: boolean;
+    disabledTooltip?: string;
+    buttonText?: string;
 }
 
 const StyledFormComponent = styled('div', {
@@ -26,13 +30,21 @@ const StyledFormComponent = styled('div', {
     }
 }));
 
-export const Form: (props: FormProps) => JSX.Element = ({ handleSubmit, children }: FormProps) => {
+export const Form: (props: FormProps) => JSX.Element = ({ handleSubmit, children, disabled = false, disabledTooltip = '', buttonText = 'Save' }: FormProps) => {
+    const saveButton = (
+        <ButtonPrimary onClick={handleSubmit} disabled={disabled}>{buttonText}</ButtonPrimary>
+    );
+
     return (
         <StyledFormComponent>
             {children}
             <Grid container>
                 <Grid item xs={5}>
-                    <ButtonPrimary onClick={handleSubmit}>Save</ButtonPrimary>
+                    {disabled && disabledTooltip ? (
+                        <Tooltip title={disabledTooltip} arrow>
+                            <span>{saveButton}</span>
+                        </Tooltip>
+                    ) : saveButton}
                 </Grid>
             </Grid>
         </StyledFormComponent>
