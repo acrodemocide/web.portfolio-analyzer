@@ -8,6 +8,7 @@ export interface FormProps {
     children?: JSX.Element[];
     disabled?: boolean;
     disabledTooltip?: string;
+    buttonText?: string;
 }
 
 const StyledFormComponent = styled('div', {
@@ -29,9 +30,9 @@ const StyledFormComponent = styled('div', {
     }
 }));
 
-export const Form: (props: FormProps) => JSX.Element = ({ handleSubmit, children, disabled = false, disabledTooltip = '' }: FormProps) => {
+export const Form: (props: FormProps) => JSX.Element = ({ handleSubmit, children, disabled = false, disabledTooltip = '', buttonText = 'Save' }: FormProps) => {
     const saveButton = (
-        <ButtonPrimary onClick={handleSubmit} disabled={disabled}>Save</ButtonPrimary>
+        <ButtonPrimary onClick={handleSubmit} disabled={disabled}>{buttonText}</ButtonPrimary>
     );
 
     return (
