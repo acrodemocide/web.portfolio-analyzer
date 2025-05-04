@@ -6,7 +6,7 @@ import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
 import { BackTestRequest, BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { TextField, Button, Box } from '@mui/material';
+import { TextField, Button, Box, InputAdornment } from '@mui/material';
 import { ButtonPrimary } from '../components/buttons/button-primary';
 
 interface StockPick {
@@ -32,6 +32,7 @@ export const PortfolioBuilder = () => {
     const benchMarkMenuItems: string[] = ['None', 'S&P 500', 'DJIA', 'NASDAQ 100']
 
     const [formPrincipalAmount, setFormPrincipalAmount] = useState('');
+    const [formattedPrincipalAmount, setFormattedPrincipalAmount] = useState('');
     const [formBenchMark, setFormBenchMark] = useState(benchMarkMenuItems[0]);
     const [stockPicks, setStockPicks] = useState(initialStockPicks);
     const [portfolio, setPortfolio] = useState({ priceHistory: [] as PortfolioSnapshot[] } as Portfolio);
@@ -87,6 +88,32 @@ export const PortfolioBuilder = () => {
         }
     }
 
+    const formatAsDollars = (value: string): string => {
+        let numericValue = value.replace(/[^0-9.]/g, '');
+        const decimalPointCount = (numericValue.match(/\./g) || []).length;
+        if (decimalPointCount > 1) {
+            const parts = numericValue.split('.');
+            numericValue = parts[0] + '.' + parts.slice(1).join('');
+        }
+        if (numericValue === '') {
+            return '';
+        }
+        const number = parseFloat(numericValue);
+        if (!isNaN(number)) {
+            const parts = numericValue.split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return parts.join('.');
+        }
+        return numericValue;
+    };
+
+    const handlePrincipalAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value;
+        const numericValue = rawValue.replace(/[^0-9.]/g, '');
+        setFormPrincipalAmount(numericValue);
+        setFormattedPrincipalAmount(formatAsDollars(numericValue));
+    };
+
     const handleSubmit = () => {
         const filteredStockPicks = stockPicks.filter((x) => x.ticker !== '' && x.percent !== '');
         const backTestRequest: BackTestRequest = {
@@ -123,11 +150,11 @@ export const PortfolioBuilder = () => {
                 <FormTextInput
                     id={'principalAmount'}
                     label={'Principal Amount'}
-                    value={formPrincipalAmount}
-                    onChange={(e) => {
-                        if ((!isNaN(parseFloat(e.target.value)) || e.target.value === '')) {
-                        setFormPrincipalAmount(e.target.value)
-                    }}}
+                    value={formattedPrincipalAmount}
+                    onChange={handlePrincipalAmountChange}
+                    startAdornment={
+                        <InputAdornment position="start">$</InputAdornment>
+                    }
                 />
                 <TextField
                     sx={{marginBottom: '10px'}}
