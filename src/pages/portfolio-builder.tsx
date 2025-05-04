@@ -6,7 +6,8 @@ import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
 import { BackTestRequest, BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { TextField } from '@mui/material';
+import { TextField, Button, Box } from '@mui/material';
+import { ButtonPrimary } from '../components/buttons/button-primary';
 
 interface StockPick {
     ticker: string;
@@ -23,13 +24,10 @@ export const PortfolioBuilder = () => {
     'You can choose from a number of benchmarks to compare your portfolio ' +
     'against for that same period.';
 
-    const initialStockPicks: StockPick[] = [];
-    for (let i = 0; i < 10; i++) {
-        initialStockPicks.push({
-            ticker: '',
-            percent: ''
-        });
-    }
+    const initialStockPicks: StockPick[] = [{
+        ticker: '',
+        percent: ''
+    }];
 
     const benchMarkMenuItems: string[] = ['None', 'S&P 500', 'DJIA', 'NASDAQ 100']
 
@@ -40,6 +38,7 @@ export const PortfolioBuilder = () => {
     const [calculatedBenchmark, setCalculatedBenchmark] = useState('');
     const [formStartDate, setFormStartDate] = useState(new Date());
     const [formEndDate, setFormEndDate] = useState(new Date());
+    const [totalPercentage, setTotalPercentage] = useState(0);
 
     const handleTickerChange = (ticker: string, index: number) => {
         let stockPick: StockPick = stockPicks[index];
@@ -51,6 +50,26 @@ export const PortfolioBuilder = () => {
         let stockPick: StockPick = stockPicks[index];
         stockPicks[index] = { ...stockPick, percent };
         setStockPicks([...stockPicks]);
+        updateTotalPercentage([...stockPicks]);
+    };
+
+    const updateTotalPercentage = (picks: StockPick[]) => {
+        const total = picks.reduce((sum, stock) => {
+            const percentValue = parseFloat(stock.percent) || 0;
+            return sum + percentValue;
+        }, 0);
+        setTotalPercentage(total);
+    };
+
+    const addStock = () => {
+        setStockPicks([...stockPicks, { ticker: '', percent: '' }]);
+    };
+
+    const removeStock = (index: number) => {
+        const updatedStocks = [...stockPicks];
+        updatedStocks.splice(index, 1);
+        setStockPicks(updatedStocks);
+        updateTotalPercentage(updatedStocks);
     };
 
     const convertBenchmarkToTicker = (benchmark: string) => {
@@ -135,11 +154,39 @@ export const PortfolioBuilder = () => {
                 <Typography variant="h3" gutterBottom>
                     Select your stocks
                 </Typography>
+                
+                <Box sx={{ 
+                    mb: 2, 
+                    p: 1, 
+                    border: '1px solid', 
+                    borderColor: totalPercentage === 100 ? 'success.main' : 
+                                totalPercentage > 100 ? 'error.main' : 
+                                'warning.main',
+                    borderRadius: 1,
+                    bgcolor: 'background.paper',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}>
+                    <Typography variant="body1">
+                        Total allocation: {totalPercentage}%
+                    </Typography>
+                    <Typography variant="body2" color={
+                        totalPercentage === 100 ? 'success.main' : 
+                        totalPercentage > 100 ? 'error.main' : 
+                        'warning.main'
+                    }>
+                        {totalPercentage === 100 ? 'Perfect!' : 
+                         totalPercentage > 100 ? 'Over 100%' : 
+                         'Under 100%'}
+                    </Typography>
+                </Box>
+                
                 <div>
                     {stockPicks.map((stockPick: StockPick, index: number) => {
                         return (
-                            <Grid key={index} container>
-                                <Grid item xs={8}>
+                            <Grid key={index} container spacing={2} alignItems="center" sx={{ mb: 2 }}>
+                                <Grid item xs={6} sm={7}>
                                     <FormTextInput
                                         id={`tickerInput_${index}`}
                                         label={'Ticker Symbol'}
@@ -149,20 +196,38 @@ export const PortfolioBuilder = () => {
                                         }}
                                     />
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={4} sm={3}>
                                     <FormTextInput
                                         id={`tickerPercent_${index}`}
                                         label={'Percent'}
                                         value={stockPick.percent}
                                         onChange={(e) => {
-                                            handlePercentChange(e.target.value, index);
+                                            if (!isNaN(parseFloat(e.target.value)) || e.target.value === '') {
+                                                handlePercentChange(e.target.value, index);
+                                            }
                                         }}
                                     />
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Button 
+                                        variant="outlined" 
+                                        color="error" 
+                                        onClick={() => removeStock(index)}
+                                        disabled={stockPicks.length <= 1}
+                                    >
+                                        Remove
+                                    </Button>
                                 </Grid>
                             </Grid>
                         );
                     })}
                 </div>
+
+                <Box sx={{ mt: 2, mb: 3 }}>
+                    <ButtonPrimary onClick={addStock}>
+                        Add Stock
+                    </ButtonPrimary>
+                </Box>
             </Form>
             { portfolio.priceHistory.length > 0 && (
                 <div style={{marginLeft: '30px'}}>
