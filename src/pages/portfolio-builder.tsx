@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { Form } from '../components/form/form';
@@ -331,10 +331,10 @@ export const PortfolioBuilder = () => {
                                     {portfolio.priceHistory.length > 1 && (
                                         <>
                                             <Typography variant="body2" paragraph>
-                                                Starting Value: ${portfolio.priceHistory[0].price.toFixed(2)}
+                                                Starting Value: ${portfolio.priceHistory[0].price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                                             </Typography>
                                             <Typography variant="body2" paragraph>
-                                                Final Value: ${portfolio.priceHistory[portfolio.priceHistory.length - 1].price.toFixed(2)}
+                                                Final Value: ${portfolio.priceHistory[portfolio.priceHistory.length - 1].price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                                             </Typography>
                                             <Typography variant="body2" fontWeight="bold" color={
                                                 portfolio.priceHistory[portfolio.priceHistory.length - 1].price > portfolio.priceHistory[0].price ? 'success.main' : 'error.main'
@@ -354,10 +354,10 @@ export const PortfolioBuilder = () => {
                                         {portfolio.benchmark.length > 1 && (
                                             <>
                                                 <Typography variant="body2" paragraph>
-                                                    Starting Value: ${portfolio.benchmark[0].price.toFixed(2)}
+                                                    Starting Value: ${portfolio.benchmark[0].price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                                                 </Typography>
                                                 <Typography variant="body2" paragraph>
-                                                    Final Value: ${portfolio.benchmark[portfolio.benchmark.length - 1].price.toFixed(2)}
+                                                    Final Value: ${portfolio.benchmark[portfolio.benchmark.length - 1].price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                                                 </Typography>
                                                 <Typography variant="body2" fontWeight="bold" color={
                                                     portfolio.benchmark[portfolio.benchmark.length - 1].price > portfolio.benchmark[0].price ? 'success.main' : 'error.main'
