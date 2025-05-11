@@ -6,6 +6,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm install --legacy-peer-deps`
+
+Runs the installer to install all dependencies for the project. "--legacy-peer-deps" is a hacky
+way to get around some of the potential depency issues that exist amongh the packages, and
+we want to address this in the future, but for now, this gets the project set up to be run.
+
 ### `npm start`
 
 Runs the app in the development mode.\
