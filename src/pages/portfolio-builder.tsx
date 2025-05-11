@@ -6,7 +6,7 @@ import { FormTextInput } from '../components/form/form-fields/form-text-input';
 import { FormSelectInput } from '../components/form/form-fields/form-select-input';
 import { BackTestRequest, BacktestPortfolio, Portfolio, PortfolioSnapshot } from '../services/backtest-service';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { TextField, Button, Box, InputAdornment, Paper, Divider, Alert } from '@mui/material';
+import { TextField, Button, Box, InputAdornment, Paper, Divider, Alert, CircularProgress } from '@mui/material';
 import { ButtonPrimary } from '../components/buttons/button-primary';
 
 interface StockPick {
@@ -40,6 +40,7 @@ export const PortfolioBuilder = () => {
     const [formStartDate, setFormStartDate] = useState(new Date());
     const [formEndDate, setFormEndDate] = useState(new Date());
     const [totalPercentage, setTotalPercentage] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
     const resultsRef = useRef<HTMLDivElement>(null);
 
     const handleTickerChange = (ticker: string, index: number) => {
@@ -128,14 +129,21 @@ export const PortfolioBuilder = () => {
         filteredStockPicks.forEach((x) => {
             backTestRequest.stocks[x.ticker] = parseFloat(x.percent) / 100.0;
         });
+        
+        setIsLoading(true);
+
         BacktestPortfolio(backTestRequest).then((response) => {
             setPortfolio(response);
             setCalculatedBenchmark(formBenchMark);
+            setIsLoading(false);
             setTimeout(() => {
                 if (resultsRef.current) {
                     resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }, 500);
+        }).catch((error) => {
+            console.error('Backtest failed:', error);
+            setIsLoading(false);
         });
     };
 
@@ -269,7 +277,7 @@ export const PortfolioBuilder = () => {
             </Form>
 
             {/* Preview section that shows even before results are available */}
-            {portfolio.priceHistory.length === 0 && (
+            {portfolio.priceHistory.length === 0 && !isLoading && (
                 <Paper elevation={2} sx={{ margin: '30px', padding: '20px' }}>
                     <Typography variant="h4" gutterBottom>
                         Results Preview
@@ -302,7 +310,36 @@ export const PortfolioBuilder = () => {
                 </Paper>
             )}
             
-            { portfolio.priceHistory.length > 0 && (
+            {/* Loading indicator while waiting for backtest results */}
+            {isLoading && (
+                <Paper elevation={2} ref={resultsRef} sx={{ margin: '30px', padding: '20px' }}>
+                    <Typography variant="h4" gutterBottom>
+                        Processing Backtest
+                    </Typography>
+                    <Divider sx={{ marginBottom: '20px' }} />
+                    <Box 
+                        sx={{ 
+                            height: 300, 
+                            display: 'flex', 
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            padding: 3,
+                            margin: 2
+                        }}
+                    >
+                        <CircularProgress size={60} thickness={4} sx={{ mb: 3 }} />
+                        <Typography variant="h6" color="text.secondary" align="center">
+                            Calculating portfolio performance...
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
+                            This may take a few moments while we analyze historical data
+                        </Typography>
+                    </Box>
+                </Paper>
+            )}
+            
+            { portfolio.priceHistory.length > 0 && !isLoading && (
                 <Paper ref={resultsRef} elevation={3} sx={{ margin: '30px', padding: '20px' }}>
                     <Typography variant="h4" gutterBottom color="primary">
                         Portfolio Performance Results
